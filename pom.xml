@@ -16,6 +16,8 @@
     <spring.version>4.1.4.RELEASE</spring.version>
     <hibernate.version>4.3.8.Final</hibernate.version>
     <jackson.version>2.5.0</jackson.version>
+    <jackson-mapper-asl-version>1.9.12</jackson-mapper-asl-version>
+    <jackson-core-asl-version>1.9.12</jackson-core-asl-version>
   </properties>
 
   <dependencies>
@@ -34,6 +36,65 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <!--json-->
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.8.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>net.sf.ezmorph</groupId>
+      <artifactId>ezmorph</artifactId>
+      <version>1.0.6</version>
+    </dependency>
+
+    <!-- jackson start -->
+    <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+          <version>2.7.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+    <!-- jackson end -->
+
 
     <!-- spring -->
     <dependency>
@@ -158,23 +219,23 @@
       <version>1.2.3</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-annotations</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-core</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+      <!--<artifactId>jackson-databind</artifactId>-->
+      <!--<version>${jackson.version}</version>-->
+    <!--</dependency>-->
 
     <!-- aop -->
     <dependency>

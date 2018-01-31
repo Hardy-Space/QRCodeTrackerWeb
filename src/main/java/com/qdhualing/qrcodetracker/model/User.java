@@ -1,4 +1,4 @@
-package com.qdhualing.qrcodetracker.bean;
+package com.qdhualing.qrcodetracker.model;
 
 /**
  * Created by Administrator on 2018/1/27.
@@ -11,7 +11,15 @@ public class User {
 
     private String pwd;
 
-    private String identity;
+    private String trueName;
+
+    public String getTrueName() {
+        return trueName;
+    }
+
+    public void setTrueName(String trueName) {
+        this.trueName = trueName;
+    }
 
     public int getId() {
         return id;
@@ -37,11 +45,4 @@ public class User {
         this.pwd = pwd;
     }
 
-    public String getIdentity() {
-        return identity;
-    }
-
-    public void setIdentity(String identity) {
-        this.identity = identity;
-    }
 }

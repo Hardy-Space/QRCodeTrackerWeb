@@ -1,8 +1,9 @@
 package com.qdhualing.qrcodetracker.daoI;
 
 import com.qdhualing.qrcodetracker.bean.JDBCDataSource;
-import com.qdhualing.qrcodetracker.bean.User;
+import com.qdhualing.qrcodetracker.model.User;
 import com.qdhualing.qrcodetracker.dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 @Repository
 public class SqlServerUserDao implements UserDao,Serializable {
 
-    @Resource
+    @Autowired
     private JDBCDataSource dataSource ;
 
     public User findUserByName(String userName) {
@@ -29,6 +30,17 @@ public class SqlServerUserDao implements UserDao,Serializable {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,userName);
             ResultSet rs = ps.executeQuery();
+            User user = null;
+            while (rs.next()){
+                user = new User();
+                user.setId(rs.getInt("UserID"));
+                user.setUserName(rs.getString("LoginName"));
+                user.setPwd(rs.getString("Password"));
+                user.setTrueName(rs.getString("TrueName"));
+            }
+            rs.close();
+            ps.close();
+            return user;
         } catch (SQLException e) {
             e.printStackTrace();
         }

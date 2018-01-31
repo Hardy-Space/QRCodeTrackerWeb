@@ -1,6 +1,6 @@
 package com.qdhualing.qrcodetracker.dao;
 
-import com.qdhualing.qrcodetracker.bean.User;
+import com.qdhualing.qrcodetracker.model.User;
 
 /**
  * Created by Administrator on 2018/1/27.

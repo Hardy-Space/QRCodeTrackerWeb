@@ -15,20 +15,21 @@ public class JDBCDataSource {
 
     private String driver;
 
-    @Value("#{jdbc.url}")
+    @Value("#{jdbcProps.url}")
     private String url;
 
-    @Value("#{jdbc.username}")
+    @Value("#{jdbcProps.username}")
     private String userName;
 
-    @Value("#{jdbc.password}")
+    @Value("#{jdbcProps.password}")
     private String password;
 
-    @Value("#{jdbc.driverClass}")
+
     public String getDriver() {
         return driver;
     }
 
+    @Value("#{jdbcProps.driverClass}")
     public void setDriver(String driver) {
         try {
             Class.forName(driver);

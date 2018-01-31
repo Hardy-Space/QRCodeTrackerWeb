@@ -2,32 +2,76 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
-">
+        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <context:annotation-config/>
+    <!--<context:annotation-config/>-->
     <!--扫描注解包-->
-    <context:component-scan base-package="com.qdhualing.qrcodetracker"/>
+    <context:component-scan base-package="com"/>
+
+    <util:properties id="jdbcProps" location="classpath:jdbc.properties"/>
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <!--json视图拦截器，读取到@ResponseBody的时候去配置它-->
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+    <!--json转化器，它可以将结果转化-->
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--<bean id="jdbcProps" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">-->
+    <!--<property name="location">-->
+    <!--<value>classpath:jdbc.properties</value>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!--视图解析-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 用于将对象转换为 JSON  转换器-->
+    <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
+    <bean id="stringConverter"
+          class="org.springframework.http.converter.StringHttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>text/plain;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
 
     <!--配置文件加载 init.properties-->
-    <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations" value="classpath:jdbc.properties"/>
-    </bean>
+    <!--<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+    <!--<property name="locations" value="classpath:jdbc.properties"/>-->
+    <!--</bean>-->
     <!-- 使用Tomcat JDBC连接(池) -->
-    <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driverClass}"></property>
-        <property name="url" value="${jdbc.url}"></property>
-        <property name="username" value="${jdbc.username}"></property>
-        <property name="password" value="${jdbc.password}"></property>
-    </bean>
+    <!--<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">-->
+    <!--<property name="driverClassName" value="${jdbc.driverClass}"></property>-->
+    <!--<property name="url" value="${jdbc.url}"></property>-->
+    <!--<property name="username" value="${jdbc.username}"></property>-->
+    <!--<property name="password" value="${jdbc.password}"></property>-->
+    <!--</bean>-->
 
     <!-- 配置sessionFactory-->
 

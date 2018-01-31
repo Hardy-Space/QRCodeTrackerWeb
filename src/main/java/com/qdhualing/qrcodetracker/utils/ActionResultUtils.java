@@ -7,7 +7,7 @@ import com.qdhualing.qrcodetracker.bean.ActionResult;
  */
 public class ActionResultUtils {
 
-    public static ActionResult setErrorResult(ActionResult result,int code,String errorTipMsg){
+    public static ActionResult setResultMsg(ActionResult result,int code,String errorTipMsg){
         result.setCode(code);
         result.setMessage(errorTipMsg);
         return result;
