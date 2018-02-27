@@ -12,6 +12,16 @@ public class LoginResult {
 
     private String trueName;
 
+    private String portraitUrl ;
+
+    public String getPortraitUrl() {
+        return portraitUrl;
+    }
+
+    public void setPortraitUrl(String portraitUrl) {
+        this.portraitUrl = portraitUrl;
+    }
+
     public String getTrueName() {
         return trueName;
     }

@@ -102,4 +102,7 @@
         <aop:advisor advice-ref="transactionAdvice" pointcut-ref="businessService"/>
     </aop:config>-->
 
+    <!--导入spring配置信息-->
+    <import resource="classpath:spring-mybatis.xml" />
+
 </beans>

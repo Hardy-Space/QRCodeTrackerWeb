@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdhualing.qrcodetracker.dao.UserDao">
+
+    <select id="findUserByName" resultType="User">
+        SELECT * FROM Hl_User WHERE LoginName = #{0} AND Password = #{1}
+    </select>
+
+
+    <select id="getMainData" resultType="UserAuthority">
+        SELECT rr.Group_2 ,Hl_UserGroup.GroupName ,Hl_UserGroup.Auth_Mobile
+        FROM (SELECT * FROM Hl_User WHERE UserID = #{0}) AS rr LEFT JOIN Hl_UserGroup
+        ON rr.GroupID = Hl_UserGroup.GroupID
+    </select>
+
+    <select id="getAuthNameList" resultType="Module2" parameterType="java.util.List">
+        SELECT *
+        FROM M_Module2
+        WHERE ID IN
+        <foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

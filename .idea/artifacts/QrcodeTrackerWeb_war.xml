@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="QrcodeTrackerWeb:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="QrcodeTrackerWeb.war">
-      <element id="artifact" artifact-name="QrcodeTrackerWeb:war exploded" />
-    </root>
-  </artifact>
-</component>
