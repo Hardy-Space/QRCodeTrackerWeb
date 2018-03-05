@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
+	<select id="getMaterialInData" resultType="com.qdhualing.qrcodetracker.bean.DataResult">
+		SELECT
+		mwlin.*,mwls.YuJing,mwls.Company
+		FROM M_WLIn as mwlin left join M_WLS as mwls
+		on mwlin.QRCode_ID=mwls.QRCode_ID
+		where mwlin.QRCode_ID=#{qrcodeId}
+	</select>
+
+	<insert id="createWLWT_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+		insert into Rkd_WlWt
+<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="FhDw!=null">
+			FhDw,
+		</if>
+		<if test="ShRq!=null">
+			ShRq,
+		</if>
+		<if test="InDh!=null">
+			InDh,
+		</if>
+		<if test="Shr!=null">
+			Shr,
+		</if>
+		<if test="Fhr!=null">
+			Fhr
+		</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="FhDw!=null">
+			#{FhDw},
+		</if>
+		<if test="ShRq!=null">
+			#{ShRq},
+		</if>
+		<if test="InDh!=null">
+			#{InDh},
+		</if>
+		<if test="Shr!=null">
+			#{Shr},
+		</if>
+		<if test="Fhr!=null">
+			#{Fhr}
+		</if>
+		</trim>
+	</insert>
+
+	<insert id="createWL_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+		insert into Rkd_Wl
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="ShRq!=null">
+			ShRq,
+		</if>
+		<if test="InDh!=null">
+			InDh,
+		</if>
+		<if test="Shr!=null">
+			Shr
+		</if>
+		</trim>
+				values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="ShRq!=null">
+			#{ShRq},
+		</if>
+		<if test="InDh!=null">
+			#{InDh},
+		</if>
+		<if test="Shr!=null">
+			#{Shr}
+		</if>
+		</trim>
+	</insert>
+
+	<insert id="createWLIN_M" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
+		insert into M_WLIn
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="qRCodeID!=null">QRCode_ID,</if>
+			<if test="productName!=null">ProductName,</if>
+			<if test="dWZL!=null">DWZL,</if>
+			<if test="pCZL!=null">PCZL,</if>
+			<if test="dW!=null">DW,</if>
+			<if test="bz!=null">Bz,</if>
+			<if test="lb!=null">SortID,</if>
+			<if test="remark!=null">remark,</if>
+			<if test="wLCode!=null">WL_Code,</if>
+			<if test="yLPC!=null">YLPC,</if>
+			<if test="gG!=null">GG,</if>
+			<if test="cHD!=null">CHD,</if>
+			SHL,
+			<if test="inDh!=null">InDh,</if>
+			<if test="cZY!=null">CZY,</if>
+			<if test="lLTime!=null">LL_Time</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="qRCodeID!=null">#{qRCodeID},</if>
+			<if test="productName!=null">#{productName},</if>
+			<if test="dWZL!=null">#{dWZL},</if>
+			<if test="pCZL!=null">#{pCZL},</if>
+			<if test="dW!=null">#{dW},</if>
+			<if test="bz!=null">#{bz},</if>
+			<if test="lb!=null">#{lb},</if>
+			<if test="remark!=null">#{remark},</if>
+			<if test="wLCode!=null">#{wLCode},</if>
+			<if test="yLPC!=null">#{yLPC},</if>
+			<if test="gG!=null">#{gG},</if>
+			<if test="cHD!=null">#{cHD},</if>
+			#{shl},
+			<if test="inDh!=null">#{inDh},</if>
+			<if test="cZY!=null">#{cZY},</if>
+			<if test="lLTime!=null">#{lLTime}</if>
+		</trim>
+	</insert>
+
+	<select id="getCreateRKDParamByInDh" resultType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+		select * from
+		Rkd_Wl where InDh=#{inDh}
+	</select>
+
+	<select id="getWLINParamListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
+		select * from
+		M_WLIn where InDh=#{inDh}
+	</select>
+
+	<select id="getWLSParamByQRCode" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
+		select * from M_WLS
+		where QRCode_ID=#{qRCodeID}
+	</select>
+
+	<update id="updataWLINParamByQRCode">
+		update M_WLS set PCZL=#{0}
+		where QRCode_ID=#{1}
+	</update>
+</mapper>

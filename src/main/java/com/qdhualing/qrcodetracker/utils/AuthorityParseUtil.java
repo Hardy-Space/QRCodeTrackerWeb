@@ -17,8 +17,11 @@ public class AuthorityParseUtil {
      * @desc 将数据库中查出来的权限字符串解析成module2中的对应功能名集合
      */
     public static List<Integer> parseToFunctionList(String authorityStr, int extraAuth) {
-        String[] strs = authorityStr.split(",");
         List<Integer> result = new ArrayList<Integer>();
+    	if(authorityStr==null) {
+    		return result;
+    	}
+        String[] strs = authorityStr.split(",");
         for (String s : strs) {
             result.add(Integer.parseInt(s));
         }

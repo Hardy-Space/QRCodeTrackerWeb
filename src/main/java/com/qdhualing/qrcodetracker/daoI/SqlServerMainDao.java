@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by Administrator on 2018/1/29.
  */
 @Repository
-public class SqlServerMainDao implements MainDao {
+public class SqlServerMainDao  {
 
     @Autowired
     private JDBCDataSource dataSource;
