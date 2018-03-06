@@ -9,7 +9,7 @@
 		where mwlin.QRCode_ID=#{qrcodeId}
 	</select>
 
-	<insert id="createWLWT_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+	<insert id="createWLWT_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
 		insert into Rkd_WlWt
 <trim prefix="(" suffix=")" suffixOverrides=",">
 		<if test="FhDw!=null">
@@ -48,7 +48,7 @@
 		</trim>
 	</insert>
 
-	<insert id="createWL_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+	<insert id="createWL_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
 		insert into Rkd_Wl
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		<if test="ShRq!=null">
@@ -116,7 +116,7 @@
 		</trim>
 	</insert>
 
-	<select id="getCreateRKDParamByInDh" resultType="com.qdhualing.qrcodetracker.bean.CreateRKDParam">
+	<select id="getCreateRKDParamByInDh" resultType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
 		select * from
 		Rkd_Wl where InDh=#{inDh}
 	</select>

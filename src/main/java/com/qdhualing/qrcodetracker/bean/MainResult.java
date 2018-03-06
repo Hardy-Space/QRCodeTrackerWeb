@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author 马鹏昊
  * @date {date}
- * @des
+ * @desc 所属部门和可使用的功能权限
  * @updateAuthor
  * @updateDate
  * @updateDes

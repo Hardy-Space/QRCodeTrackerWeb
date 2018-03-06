@@ -1,22 +1,13 @@
 package com.qdhualing.qrcodetracker.service;
 
-import com.qdhualing.qrcodetracker.bean.CreateRKDParam;
-import com.qdhualing.qrcodetracker.bean.DataInputParams;
-import com.qdhualing.qrcodetracker.bean.DataResult;
-import com.qdhualing.qrcodetracker.bean.GetNeedInputedDataParams;
-import com.qdhualing.qrcodetracker.bean.WLINParam;
-import com.qdhualing.qrcodetracker.bean.WLINResult;
+import com.qdhualing.qrcodetracker.bean.*;
+import com.qdhualing.qrcodetracker.bean.CreateWLRKDParam;
 import com.qdhualing.qrcodetracker.dao.MainDao;
-import com.qdhualing.qrcodetracker.model.FunctionType;
-import com.qdhualing.qrcodetracker.utils.TypeParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * Created by Administrator on 2018/1/29.
@@ -34,7 +25,7 @@ public class MainService {
 
     }
     //保存物料的入库单信息
-    public int createWL_RKD(CreateRKDParam rkdpParams) {
+    public int createWL_RKD(CreateWLRKDParam rkdpParams) {
     	int a=mainDao.createWL_RKD(rkdpParams);
     	if(a==1) {
     		return 1;
@@ -42,7 +33,7 @@ public class MainService {
     	return 0;
     }
     //保存物料委托的入库单信息
-    public int createWLWT_RKD(CreateRKDParam rkdpParams) {
+    public int createWLWT_RKD(CreateWLRKDParam rkdpParams) {
     	int b=mainDao.createWLWT_RKD(rkdpParams);
     	if(b==1) {
     		return 1;
@@ -67,7 +58,7 @@ public class MainService {
     }
     //根据单号去查询物料入库信息
     public int getCreateRKDParamByInDh(Long InDh) {
-    	CreateRKDParam param=mainDao.getCreateRKDParamByInDh(InDh);
+    	CreateWLRKDParam param=mainDao.getCreateRKDParamByInDh(InDh);
     	if(param!=null) {
     		return 1;
     	}

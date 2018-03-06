@@ -9,7 +9,7 @@ package com.qdhualing.qrcodetracker.bean;
  * @updateDes
  */
 
-public class CreateRKDParam {
+public class CreateWLRKDParam {
 	//发货单位
     private String FhDw;
     //收货日期

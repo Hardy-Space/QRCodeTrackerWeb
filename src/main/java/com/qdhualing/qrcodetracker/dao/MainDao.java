@@ -2,7 +2,7 @@ package com.qdhualing.qrcodetracker.dao;
 
 import java.util.List;
 
-import com.qdhualing.qrcodetracker.bean.CreateRKDParam;
+import com.qdhualing.qrcodetracker.bean.CreateWLRKDParam;
 import com.qdhualing.qrcodetracker.bean.DataInputParams;
 import com.qdhualing.qrcodetracker.bean.DataResult;
 import com.qdhualing.qrcodetracker.bean.WLINParam;
@@ -16,13 +16,13 @@ public interface MainDao {
     //获取物料入库所需录入数据
     DataResult getMaterialInData(String qrcodeId);
     //插入入库单的物料委托信息
-    int createWLWT_RKD(CreateRKDParam rkdpParams);
+    int createWLWT_RKD(CreateWLRKDParam rkdpParams);
     //插入入库单的物料信息
-    int createWL_RKD(CreateRKDParam rkdpParams);
+    int createWL_RKD(CreateWLRKDParam rkdpParams);
     //插入物料入库信息
     int createWLIN_M(WLINParam wlinParam);
     //根据入库单号查询入库信息
-    CreateRKDParam getCreateRKDParamByInDh(Long InDh);
+    CreateWLRKDParam getCreateRKDParamByInDh(Long InDh);
     //根据入库单号删除对应的入库信息
     int delWLIn_M(String InDh);
     //根据入库单号删除对应的入库单委托信息
