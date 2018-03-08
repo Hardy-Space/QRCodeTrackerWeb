@@ -4,12 +4,16 @@ import com.qdhualing.qrcodetracker.bean.*;
 import com.qdhualing.qrcodetracker.service.MainService;
 import com.qdhualing.qrcodetracker.utils.ActionResultUtils;
 import com.qdhualing.qrcodetracker.utils.ParamsUtils;
+import com.qdhualing.qrcodetracker.utils.RandomUtil;
+import org.apache.ibatis.transaction.Transaction;
+import org.apache.ibatis.transaction.managed.ManagedTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +36,8 @@ public class MainController {
         ActionResult<WLRKDResult> result = new ActionResult<WLRKDResult>();
         if (rkdpParams != null) {
             Date data = new Date();
-            long indh = data.getTime();
+            long indhL = data.getTime() ;
+            String indh = String.valueOf(indhL) + RandomUtil.getRandomLong();
             rkdpParams.setInDh(indh);
             try {
                 int c = mainService.getCreateRKDParamByInDh(rkdpParams.getInDh());
@@ -40,10 +45,10 @@ public class MainController {
                     int a = mainService.createWL_RKD(rkdpParams);
                     int b = mainService.createWLWT_RKD(rkdpParams);
                     if (a <= 0 || b <= 0) {
-                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "扫描产品不存在");
+                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "入库单不正确");
                     } else if (a == 1 && b == 1) {
                         WLRKDResult rdk = new WLRKDResult();
-                        rdk.setIndh(indh);
+                        rdk.setInDh(indh);
                         result.setResult(rdk);
                         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "入库单保存成功");
                     }
@@ -62,6 +67,8 @@ public class MainController {
     @ResponseBody
     public ActionResult createWLIn_M(String json) {
         WLINParam wlinParam = ParamsUtils.handleParams(json, WLINParam.class);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        wlinParam.setlLTime(df.format(System.currentTimeMillis()));
         ActionResult<DataResult> result = new ActionResult<DataResult>();
         if (wlinParam != null && wlinParam.getInDh() != null) {
             try {
@@ -69,7 +76,20 @@ public class MainController {
                 if (a <= 0) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "扫描产品不存在");
                 } else {
-                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "入库物料保存成功");
+                    /**
+                     * @author 马鹏昊
+                     * @desc 插入到库存表
+                     */
+                    a = mainService.queryWLS(wlinParam.getqRCodeID());
+                    if (a<=0){
+                        a =  mainService.insertWLS(wlinParam);
+                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "库存表插入记录成功");
+                    }else if(a>1){
+                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "库存表中出现了二维码id相同的多条记录");
+                    }else{
+                        a =  mainService.updateWLS(wlinParam);
+                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "库存表修改记录成功");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -102,6 +122,56 @@ public class MainController {
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "入库数据不正确");
     }
 
+    /**
+     * @author 马鹏昊
+     * @desc 获取物料二级分类（即类别）
+     * @return
+     */
+    @RequestMapping(value = "/getPdtSort", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getPdtSort() {
+        ActionResult<PdtSortResult> result = new ActionResult<PdtSortResult>();
+        try {
+            PdtSortResult pdtSortResult = mainService.getPdtSort();
+            if (pdtSortResult.getSortBeans() == null || pdtSortResult.getSortBeans().size() <= 0) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "无分类数据");
+            }
+            result.setResult(pdtSortResult);
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "获取类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+        }
+    }
+
+
+    /**
+     * @author 马鹏昊
+     * @desc 获取物料分类（含物料编码）
+     * @return
+     */
+    @RequestMapping(value = "/getHlSort", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getHlSort() {
+        ActionResult<HlSortResult> result = new ActionResult<HlSortResult>();
+        try {
+            HlSortResult hlSortResult = mainService.getHlSort();
+            if (hlSortResult.getHlSortBeans() == null || hlSortResult.getHlSortBeans().size() <= 0) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "无物料类别数据");
+            }
+            result.setResult(hlSortResult);
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "获取类别成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+        }
+    }
+
+    /**
+     * @author 马鹏昊
+     * @desc 生成物料出库单
+     * @return
+     */
     @RequestMapping(value = "/createWL_CKD", method = RequestMethod.POST)
     @ResponseBody
     public ActionResult createWL_CKD(String json) {
@@ -109,29 +179,127 @@ public class MainController {
         ActionResult<WLCKDResult> result = new ActionResult<WLCKDResult>();
         if (ckdParam != null) {
             Date data = new Date();
-            long time = data.getTime();
-            ckdParam.setOutdh(String.valueOf(time));
+            long time = data.getTime() ;
+            String outDh = String.valueOf(time) + RandomUtil.getRandomLong();
+            ckdParam.setOutDh(outDh);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            ckdParam.setLhRq(sdf.format(data));
             try {
-                int c = mainService.getCreateRKDParamByInDh(rkdpParams.getInDh());
-                if (c == 0) {
-                    int a = mainService.createWL_RKD(rkdpParams);
-                    int b = mainService.createWLWT_RKD(rkdpParams);
-                    if (a <= 0 || b <= 0) {
-                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "扫描产品不存在");
-                    } else if (a == 1 && b == 1) {
-                        WLCKDResult ckd = new WLCKDResult();
-                        ckd.setOutdh(String.valueOf(time));
-                        result.setResult(ckd);
-                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "入库单保存成功");
-                    }
+                int a = mainService.createWL_CKD(ckdParam);
+                int b = mainService.createWLWT_CKD(ckdParam);
+                if (a <= 0 || b <= 0) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "出库单不正确");
+                } else {
+                    WLCKDResult ckd = new WLCKDResult();
+                    ckd.setOutdh(outDh);
+                    result.setResult(ckd);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "出库单创建成功");
                 }
-                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "入库单已存在");
             } catch (Exception e) {
                 e.printStackTrace();
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
             }
         }
-        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "入库单不正确");
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "出库单不正确");
+    }
+
+    /**
+     * @author 马鹏昊
+     * @desc 物料出库界面显示数据获取
+     * @return
+     */
+    @RequestMapping(value = "/getWlOutShowData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getWlOutShowData(String json) {
+        WLOutGetShowDataParam param = ParamsUtils.handleParams(json, WLOutGetShowDataParam.class);
+        ActionResult<WLOutShowDataResult> result = new ActionResult<WLOutShowDataResult>();
+        if (param != null) {
+            try {
+                WLOutShowDataResult showDataResult = mainService.getWLSData(param.getQrcodeId());
+                if (showDataResult==null) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    result.setResult(showDataResult);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
+    /**
+     * @author 马鹏昊
+     * @desc 物料出库
+     * @return
+     */
+    @RequestMapping(value = "/wlOut", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult wlOut(String json) {
+        WLOutParam wlOutParam = ParamsUtils.handleParams(json, WLOutParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (wlOutParam != null) {
+            Date data = new Date();
+            long time = data.getTime() ;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            wlOutParam.setTime(sdf.format(data));
+            try {
+                CKDWLBean ckdwlBean = mainService.findWL_CKD(wlOutParam.getOutDh());
+                if (ckdwlBean==null) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "出库单不存在");
+                }
+                wlOutParam.setFlr(ckdwlBean.getFhR());
+                wlOutParam.setLlr(ckdwlBean.getLhR());
+                WLSBean wlsBean = mainService.findWLS(wlOutParam.getQrCodeId());
+                if (wlsBean==null)
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "没找到该物料，请先入库");
+                wlOutParam.setProductName(wlsBean.getProductName());
+                wlOutParam.setWlCode(wlsBean.getWLCode());
+                wlOutParam.setDw(wlsBean.getDW());
+                wlOutParam.setDwzl(wlsBean.getDWZL());
+                wlOutParam.setGg(wlsBean.getGG());
+                wlOutParam.setSortId(wlsBean.getSortID());
+                wlOutParam.setYlpc(wlsBean.getYLPC());
+                int b = mainService.insertWLOUT(wlOutParam);
+                if ( b <= 0) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "生成出库记录失败");
+                } else {
+                    b = mainService.outUpdateWLS(wlOutParam);
+                    if (b<=0) {
+                        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "修改库存表数据失败");
+                    }
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "失败");
+    }
+
+
+    /**
+     * @author 马鹏昊
+     * @desc 获取部门数据
+     * @return
+     */
+    @RequestMapping(value = "/getDepartmentData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getDepartmentData() {
+        ActionResult<UserGroupResult> result = new ActionResult<UserGroupResult>();
+        try {
+            UserGroupResult userGroupResult = mainService.getUserGroupData();
+            if (userGroupResult.getGroupBeanList() == null || userGroupResult.getGroupBeanList().size() <= 0) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "无部门数据");
+            }
+            result.setResult(userGroupResult);
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "获取部门数据成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+        }
     }
 
 

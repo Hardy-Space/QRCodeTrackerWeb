@@ -1,7 +1,240 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
-	<select id="getMaterialInData" resultType="com.qdhualing.qrcodetracker.bean.DataResult">
+
+    <select id="getUserGroupData" resultType="com.qdhualing.qrcodetracker.bean.UserGroupBean">
+        SELECT *
+        FROM Hl_UserGroup
+    </select>
+
+    <update id="outUpdateWLS" parameterType="com.qdhualing.qrcodetracker.bean.WLOutParam">
+
+        UPDATE M_WLS
+        SET
+        SHL = SHL-#{ckShL}
+        WHERE QRCode_ID = #{qrCodeId};
+
+    </update>
+
+    <insert id="insertWLOUT" parameterType="com.qdhualing.qrcodetracker.bean.WLOutParam">
+        insert into M_WLOUT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">QRCode_ID,</if>
+            <if test="productName!=null">ProductName,</if>
+            DWZL,
+            <if test="dw!=null">DW,</if>
+            <if test="bz!=null">Bz,</if>
+            <if test="sortId!=null">SortID,</if>
+            <if test="wlCode!=null">WL_Code,</if>
+            <if test="ylpc!=null">YLPC,</if>
+            <if test="gg!=null">GG,</if>
+            SHL,
+            <if test="outDh!=null">OutDh,</if>
+            <if test="flr!=null">FLR,</if>
+            <if test="llr!=null">LLR,</if>
+            <if test="time!=null">TIME,</if>
+            <if test="llbm!=null">LLBM</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">#{qrCodeId},</if>
+            <if test="productName!=null">#{productName},</if>
+            #{dwzl},
+            <if test="dw!=null">#{dw},</if>
+            <if test="bz!=null">#{bz},</if>
+            <if test="sortId!=null">#{sortId},</if>
+            <if test="wlCode!=null">#{wlCode},</if>
+            <if test="ylpc!=null">#{ylpc},</if>
+            <if test="gg!=null">#{gg},</if>
+            #{ckShL},
+            <if test="outDh!=null">#{outDh},</if>
+            <if test="flr!=null">#{flr},</if>
+            <if test="llr!=null">#{llr},</if>
+            <if test="time!=null">#{time},</if>
+            <if test="llbm!=null">#{llbm}</if>
+        </trim>
+    </insert>
+
+
+    <select id="findWLS" resultType="com.qdhualing.qrcodetracker.bean.WLSBean">
+        SELECT *
+        FROM M_WLS
+        where QRCode_ID = #{0}
+    </select>
+
+    <select id="findWL_CKD" resultType="com.qdhualing.qrcodetracker.bean.CKDWLBean">
+        SELECT *
+        FROM Ckd_Wl
+        where OutDh = #{0}
+    </select>
+
+    <update id="updateWLS" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
+
+        UPDATE M_WLS
+        SET YLPC = #{yLPC},
+             PCZL = PCZL+#{pCZL},
+            LL_Time = #{lLTime},
+            SHL = SHL+#{shl}
+        WHERE QRCode_ID = #{qRCodeID};
+
+    </update>
+
+    <insert id="insertWLS" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
+        insert into M_WLS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qRCodeID!=null">QRCode_ID,</if>
+            <if test="productName!=null">ProductName,</if>
+            <if test="dWZL!=null">DWZL,</if>
+            <if test="pCZL!=null">PCZL,</if>
+            <if test="dW!=null">DW,</if>
+            <if test="lb!=null">SortID,</if>
+            <if test="wLCode!=null">WL_Code,</if>
+            <if test="yLPC!=null">YLPC,</if>
+            <if test="gG!=null">GG,</if>
+            <if test="cHD!=null">CHD,</if>
+            SHL,
+            <if test="cZY!=null">CZY,</if>
+            <if test="lLTime!=null">LL_Time</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qRCodeID!=null">#{qRCodeID},</if>
+            <if test="productName!=null">#{productName},</if>
+            <if test="dWZL!=null">#{dWZL},</if>
+            <if test="pCZL!=null">#{pCZL},</if>
+            <if test="dW!=null">#{dW},</if>
+            <if test="lb!=null">#{lb},</if>
+            <if test="wLCode!=null">#{wLCode},</if>
+            <if test="yLPC!=null">#{yLPC},</if>
+            <if test="gG!=null">#{gG},</if>
+            <if test="cHD!=null">#{cHD},</if>
+            #{shl},
+            <if test="cZY!=null">#{cZY},</if>
+            <if test="lLTime!=null">#{lLTime}</if>
+        </trim>
+    </insert>
+
+    <select id="queryWLS" resultType="java.lang.Integer">
+		SELECT count(0)
+		FROM M_WLS
+		where QRCode_ID = #{0}
+	</select>
+
+    <select id="getWLSData" resultType="com.qdhualing.qrcodetracker.bean.WLOutShowDataResult">
+		SELECT M_WLS.ProductName, M_WLS.PCZL , M_WLS.DWZL, M_WLS.SHL, M_WLS.CHD, M_WLS.GG, M_WLS.DW, Pdt_Sort2.Sort_Name
+		FROM M_WLS left JOIN Pdt_Sort2 on M_WLS.SortID = Pdt_Sort2.ID
+		where M_WLS.QRCode_ID = #{qrcodeId}
+	</select>
+
+
+    <insert id="createWLWT_CKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLCKDParam">
+        insert into Ckd_WlWt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                OutDh,
+            </if>
+            <if test="lhDw!=null">
+                ShDw,
+            </if>
+            <if test="lhRq!=null">
+                ShRq,
+            </if>
+            <if test="fhR!=null">
+                Fhr,
+            </if>
+            <if test="lhR!=null">
+                Shr,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                #{outDh},
+            </if>
+            <if test="lhDw!=null">
+                #{lhDw},
+            </if>
+            <if test="lhRq!=null">
+                #{lhRq},
+            </if>
+            <if test="fhR!=null">
+                #{fhR},
+            </if>
+            <if test="lhR!=null">
+                #{lhR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="createWL_CKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLCKDParam">
+        insert into Ckd_Wl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                OutDh,
+            </if>
+            <if test="lhDw!=null">
+                LhDw,
+            </if>
+            <if test="lhRq!=null">
+                LhRq,
+            </if>
+            <if test="fhR!=null">
+                FhR,
+            </if>
+            <if test="fhFzr!=null">
+                FhFzr,
+            </if>
+            <if test="lhR!=null">
+                LhR,
+            </if>
+            <if test="lhFzr!=null">
+                LhFzr,
+            </if>
+            <if test="remark!=null">
+                Remark
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                #{outDh},
+            </if>
+            <if test="lhDw!=null">
+                #{lhDw},
+            </if>
+            <if test="lhRq!=null">
+                #{lhRq},
+            </if>
+            <if test="fhR!=null">
+                #{fhR},
+            </if>
+            <if test="fhFzr!=null">
+                #{fhFzr},
+            </if>
+            <if test="lhR!=null">
+                #{lhR},
+            </if>
+            <if test="lhFzr!=null">
+                #{lhFzr},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getHlSort" resultType="com.qdhualing.qrcodetracker.bean.HlSortBean">
+		SELECT *
+		FROM Hl_Sort
+	</select>
+
+    <select id="getPdtSort" resultType="com.qdhualing.qrcodetracker.bean.PdtSortBean">
+		SELECT *
+		FROM Pdt_Sort2
+	</select>
+
+    <select id="getMaterialInData" resultType="com.qdhualing.qrcodetracker.bean.DataResult">
 		SELECT
 		mwlin.*,mwls.YuJing,mwls.Company
 		FROM M_WLIn as mwlin left join M_WLS as mwls
@@ -9,129 +242,129 @@
 		where mwlin.QRCode_ID=#{qrcodeId}
 	</select>
 
-	<insert id="createWLWT_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
-		insert into Rkd_WlWt
-<trim prefix="(" suffix=")" suffixOverrides=",">
-		<if test="FhDw!=null">
-			FhDw,
-		</if>
-		<if test="ShRq!=null">
-			ShRq,
-		</if>
-		<if test="InDh!=null">
-			InDh,
-		</if>
-		<if test="Shr!=null">
-			Shr,
-		</if>
-		<if test="Fhr!=null">
-			Fhr
-		</if>
-		</trim>
-		values
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		<if test="FhDw!=null">
-			#{FhDw},
-		</if>
-		<if test="ShRq!=null">
-			#{ShRq},
-		</if>
-		<if test="InDh!=null">
-			#{InDh},
-		</if>
-		<if test="Shr!=null">
-			#{Shr},
-		</if>
-		<if test="Fhr!=null">
-			#{Fhr}
-		</if>
-		</trim>
-	</insert>
+    <insert id="createWLWT_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
+        insert into Rkd_WlWt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="FhDw!=null">
+                FhDw,
+            </if>
+            <if test="ShRq!=null">
+                ShRq,
+            </if>
+            <if test="InDh!=null">
+                InDh,
+            </if>
+            <if test="Shr!=null">
+                Shr,
+            </if>
+            <if test="Fhr!=null">
+                Fhr
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="FhDw!=null">
+                #{FhDw},
+            </if>
+            <if test="ShRq!=null">
+                #{ShRq},
+            </if>
+            <if test="InDh!=null">
+                #{InDh},
+            </if>
+            <if test="Shr!=null">
+                #{Shr},
+            </if>
+            <if test="Fhr!=null">
+                #{Fhr}
+            </if>
+        </trim>
+    </insert>
 
-	<insert id="createWL_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
-		insert into Rkd_Wl
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		<if test="ShRq!=null">
-			ShRq,
-		</if>
-		<if test="InDh!=null">
-			InDh,
-		</if>
-		<if test="Shr!=null">
-			Shr
-		</if>
-		</trim>
-				values
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		<if test="ShRq!=null">
-			#{ShRq},
-		</if>
-		<if test="InDh!=null">
-			#{InDh},
-		</if>
-		<if test="Shr!=null">
-			#{Shr}
-		</if>
-		</trim>
-	</insert>
+    <insert id="createWL_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
+        insert into Rkd_Wl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ShRq!=null">
+                ShRq,
+            </if>
+            <if test="InDh!=null">
+                InDh,
+            </if>
+            <if test="Shr!=null">
+                Shr
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ShRq!=null">
+                #{ShRq},
+            </if>
+            <if test="InDh!=null">
+                #{InDh},
+            </if>
+            <if test="Shr!=null">
+                #{Shr}
+            </if>
+        </trim>
+    </insert>
 
-	<insert id="createWLIN_M" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
-		insert into M_WLIn
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="qRCodeID!=null">QRCode_ID,</if>
-			<if test="productName!=null">ProductName,</if>
-			<if test="dWZL!=null">DWZL,</if>
-			<if test="pCZL!=null">PCZL,</if>
-			<if test="dW!=null">DW,</if>
-			<if test="bz!=null">Bz,</if>
-			<if test="lb!=null">SortID,</if>
-			<if test="remark!=null">remark,</if>
-			<if test="wLCode!=null">WL_Code,</if>
-			<if test="yLPC!=null">YLPC,</if>
-			<if test="gG!=null">GG,</if>
-			<if test="cHD!=null">CHD,</if>
-			SHL,
-			<if test="inDh!=null">InDh,</if>
-			<if test="cZY!=null">CZY,</if>
-			<if test="lLTime!=null">LL_Time</if>
-		</trim>
-		values
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="qRCodeID!=null">#{qRCodeID},</if>
-			<if test="productName!=null">#{productName},</if>
-			<if test="dWZL!=null">#{dWZL},</if>
-			<if test="pCZL!=null">#{pCZL},</if>
-			<if test="dW!=null">#{dW},</if>
-			<if test="bz!=null">#{bz},</if>
-			<if test="lb!=null">#{lb},</if>
-			<if test="remark!=null">#{remark},</if>
-			<if test="wLCode!=null">#{wLCode},</if>
-			<if test="yLPC!=null">#{yLPC},</if>
-			<if test="gG!=null">#{gG},</if>
-			<if test="cHD!=null">#{cHD},</if>
-			#{shl},
-			<if test="inDh!=null">#{inDh},</if>
-			<if test="cZY!=null">#{cZY},</if>
-			<if test="lLTime!=null">#{lLTime}</if>
-		</trim>
-	</insert>
+    <insert id="createWLIN_M" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
+        insert into M_WLIn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qRCodeID!=null">QRCode_ID,</if>
+            <if test="productName!=null">ProductName,</if>
+            <if test="dWZL!=null">DWZL,</if>
+            <if test="pCZL!=null">PCZL,</if>
+            <if test="dW!=null">DW,</if>
+            <if test="bz!=null">Bz,</if>
+            <if test="lb!=null">SortID,</if>
+            <if test="remark!=null">remark,</if>
+            <if test="wLCode!=null">WL_Code,</if>
+            <if test="yLPC!=null">YLPC,</if>
+            <if test="gG!=null">GG,</if>
+            <if test="cHD!=null">CHD,</if>
+            SHL,
+            <if test="inDh!=null">InDh,</if>
+            <if test="cZY!=null">CZY,</if>
+            <if test="lLTime!=null">LL_Time</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qRCodeID!=null">#{qRCodeID},</if>
+            <if test="productName!=null">#{productName},</if>
+            <if test="dWZL!=null">#{dWZL},</if>
+            <if test="pCZL!=null">#{pCZL},</if>
+            <if test="dW!=null">#{dW},</if>
+            <if test="bz!=null">#{bz},</if>
+            <if test="lb!=null">#{lb},</if>
+            <if test="remark!=null">#{remark},</if>
+            <if test="wLCode!=null">#{wLCode},</if>
+            <if test="yLPC!=null">#{yLPC},</if>
+            <if test="gG!=null">#{gG},</if>
+            <if test="cHD!=null">#{cHD},</if>
+            #{shl},
+            <if test="inDh!=null">#{inDh},</if>
+            <if test="cZY!=null">#{cZY},</if>
+            <if test="lLTime!=null">#{lLTime}</if>
+        </trim>
+    </insert>
 
-	<select id="getCreateRKDParamByInDh" resultType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
+    <select id="getCreateRKDParamByInDh" resultType="com.qdhualing.qrcodetracker.bean.CreateWLRKDParam">
 		select * from
 		Rkd_Wl where InDh=#{inDh}
 	</select>
 
-	<select id="getWLINParamListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
+    <select id="getWLINParamListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
 		select * from
 		M_WLIn where InDh=#{inDh}
 	</select>
 
-	<select id="getWLSParamByQRCode" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
+    <select id="getWLSParamByQRCode" resultType="com.qdhualing.qrcodetracker.bean.WLINParam">
 		select * from M_WLS
 		where QRCode_ID=#{qRCodeID}
 	</select>
 
-	<update id="updataWLINParamByQRCode">
+    <update id="updataWLINParamByQRCode">
 		update M_WLS set PCZL=#{0}
 		where QRCode_ID=#{1}
 	</update>

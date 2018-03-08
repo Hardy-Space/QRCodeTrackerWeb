@@ -15,7 +15,7 @@ public class CreateWLRKDParam {
     //收货日期
     private String ShRq;
     //入库单号
-    private Long InDh;
+    private String InDh;
     //收货人
     private String Shr;
     //发货人
@@ -37,11 +37,11 @@ public class CreateWLRKDParam {
         ShRq = shRq;
     }
 
-    public Long getInDh() {
+    public String getInDh() {
         return InDh;
     }
 
-    public void setInDh(Long inDh) {
+    public void setInDh(String inDh) {
         InDh = inDh;
     }
 

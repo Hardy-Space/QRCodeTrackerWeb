@@ -42,8 +42,6 @@ public class MainService {
     }
     //插入物料入库信息
     public int createWLIN_M(WLINParam wlinParam) {
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    	wlinParam.setlLTime(df.format(System.currentTimeMillis()));
     	wlinParam.setBz(1);
     	int b=mainDao.createWLIN_M(wlinParam);
     	if(b==1) {
@@ -57,7 +55,7 @@ public class MainService {
 		return 0;
     }
     //根据单号去查询物料入库信息
-    public int getCreateRKDParamByInDh(Long InDh) {
+    public int getCreateRKDParamByInDh(String InDh) {
     	CreateWLRKDParam param=mainDao.getCreateRKDParamByInDh(InDh);
     	if(param!=null) {
     		return 1;
@@ -93,4 +91,76 @@ public class MainService {
     public int commitMaterialInputedData(DataInputParams params) {
         return mainDao.commitMaterialInputedData(params);
     }
+
+	public PdtSortResult getPdtSort() {
+    	List<PdtSortBean> beans =  mainDao.getPdtSort();
+		PdtSortResult pdtSortResult = new PdtSortResult();
+		pdtSortResult.setSortBeans(beans);
+		return pdtSortResult;
+	}
+
+	public HlSortResult getHlSort() {
+		List<HlSortBean> beans =  mainDao.getHlSort();
+		HlSortResult hlSortResult = new HlSortResult();
+		hlSortResult.setHlSortBeans(beans);
+		return hlSortResult;
+	}
+
+	public int createWL_CKD(CreateWLCKDParam ckdParam) {
+		int a=mainDao.createWL_CKD(ckdParam);
+		return a;
+	}
+
+	public int createWLWT_CKD(CreateWLCKDParam ckdParam) {
+		int a=mainDao.createWLWT_CKD(ckdParam);
+		return a;
+	}
+
+	public WLOutShowDataResult getWLSData(String qrcodeId) {
+		WLOutShowDataResult result = null;
+		result = mainDao.getWLSData(qrcodeId);
+		return result;
+	}
+
+	public int queryWLS(String s) {
+    	Integer bb = mainDao.queryWLS(s);
+		return bb==null?0:bb;
+	}
+
+	public int insertWLS(WLINParam wlinParam) {
+		return mainDao.insertWLS(wlinParam);
+	}
+
+	public int updateWLS(WLINParam wlinParam) {
+		return mainDao.updateWLS(wlinParam);
+	}
+
+	public WLSBean findWLS(String qrCodeId) {
+    	WLSBean wlsBean = null;
+    	wlsBean = mainDao.findWLS(qrCodeId);
+		return wlsBean;
+	}
+
+	public int insertWLOUT(WLOutParam wlOutParam) {
+    	wlOutParam.setBz(1);
+		int a=mainDao.insertWLOUT(wlOutParam);
+		return a;
+	}
+
+	public int outUpdateWLS(WLOutParam wlOutParam) {
+		return mainDao.outUpdateWLS(wlOutParam);
+	}
+
+	public CKDWLBean findWL_CKD(String outDh) {
+		CKDWLBean ckdwlBean = null;
+		ckdwlBean = mainDao.findWL_CKD(outDh);
+		return ckdwlBean;
+	}
+
+	public UserGroupResult getUserGroupData() {
+		List<UserGroupBean> beans =  mainDao.getUserGroupData();
+		UserGroupResult userGroupResult = new UserGroupResult();
+		userGroupResult.setGroupBeanList(beans);
+		return userGroupResult;
+	}
 }
