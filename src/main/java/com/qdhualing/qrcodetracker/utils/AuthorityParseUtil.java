@@ -25,7 +25,7 @@ public class AuthorityParseUtil {
         for (String s : strs) {
             result.add(Integer.parseInt(s));
         }
-        if (extraAuth > 0)
+        if (extraAuth > 0 && !result.contains(extraAuth))
             result.add(extraAuth);
         return result;
     }

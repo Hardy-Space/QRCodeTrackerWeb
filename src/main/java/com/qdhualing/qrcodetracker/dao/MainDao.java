@@ -59,6 +59,14 @@ public interface MainDao {
     int outUpdateWLS(WLOutParam wlOutParam);
     //查找出库单数据
     CKDWLBean findWL_CKD(String outDh);
-
+    //获取部门数据
     List<UserGroupBean> getUserGroupData();
+    //插入临时库存表
+    int insertWLTempS(WLOutParam wlOutParam);
+    //查找临时库存表中有没有该条数据
+    int findWLTempS(String qrCodeId);
+    //更新物料临时库存表
+    int updateWLTempS(WLOutParam wlOutParam);
+    //创建物料退库单
+    int createWL_TKD(CreateWLTKDParam tkdParam);
 }

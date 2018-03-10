@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties>
+        <property name="dialect" value="sqlserver"/>
+    </properties>
+    <!--配置全局属性-->
+    <settings>
+
+        <setting name="jdbcTypeForNull" value="NULL" />
+
+        <!--使用JDBC的getGeneratedKeys 获取数据库自增主键值 默认为false-->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!--使用列别名替换列名  默认为true
+        select name as title from table   name是对应库中的表名  title是别名-->
+
+        <setting name="useColumnLabel" value="true"/>
+        <!--开启驼峰命令转换：Table (create_time) -> Entity(createtime)-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+</configuration>

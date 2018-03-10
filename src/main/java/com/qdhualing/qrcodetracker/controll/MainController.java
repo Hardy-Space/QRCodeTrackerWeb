@@ -251,6 +251,7 @@ public class MainController {
                 }
                 wlOutParam.setFlr(ckdwlBean.getFhR());
                 wlOutParam.setLlr(ckdwlBean.getLhR());
+                wlOutParam.setLlbm(ckdwlBean.getLhDw());
                 WLSBean wlsBean = mainService.findWLS(wlOutParam.getQrCodeId());
                 if (wlsBean==null)
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "没找到该物料，请先入库");
@@ -265,9 +266,18 @@ public class MainController {
                 if ( b <= 0) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "生成出库记录失败");
                 } else {
+                    //更新仓库库存表数量
                     b = mainService.outUpdateWLS(wlOutParam);
                     if (b<=0) {
                         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "修改库存表数据失败");
+                    }
+                    //查询临时库存表中是否有数据
+                    b = mainService.findWLTempS(wlOutParam.getQrCodeId());
+                    if (b<=0) {
+                        //插入临时库存表（车间）
+                        b = mainService.insertWLTempS(wlOutParam);
+                    }else {
+                        b = mainService.updateWLTempS(wlOutParam);
                     }
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
                 }
@@ -300,6 +310,68 @@ public class MainController {
             e.printStackTrace();
             return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
         }
+    }
+
+    /**
+     * @author 马鹏昊
+     * @desc 生成物料退库单
+     * @return
+     */
+    @RequestMapping(value = "/createWL_TKD", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult createWL_TKD(String json) {
+        CreateWLTKDParam tkdParam = ParamsUtils.handleParams(json, CreateWLTKDParam.class);
+        ActionResult<WLTKDResult> result = new ActionResult<WLTKDResult>();
+        if (tkdParam != null) {
+            Date data = new Date();
+            long time = data.getTime() ;
+            String backDh = String.valueOf(time) + RandomUtil.getRandomLong();
+            tkdParam.setBackDh(backDh);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            tkdParam.setThRq(sdf.format(data));
+            try {
+                int a = mainService.createWL_TKD(tkdParam);
+                if (a <= 0) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "出错");
+                } else {
+                    WLTKDResult tkd = new WLTKDResult();
+                    tkd.setBackDh(backDh);
+                    result.setResult(tkd);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "退库单创建成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "出错");
+    }
+
+    /**
+     * @author 马鹏昊
+     * @desc 物料退库界面显示数据获取
+     * @return
+     */
+    @RequestMapping(value = "/getWlTKShowData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getWlTKShowData(String json) {
+        WLOutGetShowDataParam param = ParamsUtils.handleParams(json, WLOutGetShowDataParam.class);
+        ActionResult<WLOutShowDataResult> result = new ActionResult<WLOutShowDataResult>();
+        if (param != null) {
+            try {
+                WLOutShowDataResult showDataResult = mainService.getWLSData(param.getQrcodeId());
+                if (showDataResult==null) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    result.setResult(showDataResult);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
 
 

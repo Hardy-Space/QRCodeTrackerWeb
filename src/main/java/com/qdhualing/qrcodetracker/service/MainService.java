@@ -163,4 +163,20 @@ public class MainService {
 		userGroupResult.setGroupBeanList(beans);
 		return userGroupResult;
 	}
+
+	public int insertWLTempS(WLOutParam wlOutParam) {
+		return mainDao.insertWLTempS(wlOutParam);
+	}
+
+	public int findWLTempS(String qrCodeId) {
+		return mainDao.findWLTempS(qrCodeId);
+	}
+
+	public int updateWLTempS(WLOutParam wlOutParam) {
+		return mainDao.updateWLTempS(wlOutParam);
+	}
+
+	public int createWL_TKD(CreateWLTKDParam tkdParam) {
+		return mainDao.createWL_TKD(tkdParam);
+	}
 }
