@@ -2,6 +2,1907 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getSmallCpOutData" resultType="com.qdhualing.qrcodetracker.bean.SmallCpOutGetDataResult">
+        SELECT M_CPS.CP_Name , M_CPS.YLPC , M_CPS.SCPC , M_CPS.SC_Time as scDate , M_CPS.GG , Pdt_Sort2.Sort_Name
+        FROM M_CPS LEFT JOIN Pdt_Sort2 on M_CPS.SortID = Pdt_Sort2.ID
+        WHERE M_CPS.QRCode_ID = #{0}
+    </select>
+
+    <select id="getCPS" resultType="com.qdhualing.qrcodetracker.bean.SmallCpBean">
+        SELECT *
+        FROM M_CPS
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <insert id="insertCPOutBySmallParam" parameterType="com.qdhualing.qrcodetracker.bean.SmallCpOutParam">
+        insert into M_CPOut
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="cpName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="fhDate!=null">
+                FHDate,
+            </if>
+            DWZL,
+            <if test="fhr!=null">
+                FHR,
+            </if>
+            <if test="outDh!=null">
+                OutDh,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="cpName!=null">
+                #{cpName},
+            </if>
+            #{sortId},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="fhDate!=null">
+                #{fhDate},
+            </if>
+            #{dwzl},
+            <if test="fhr!=null">
+                #{fhr},
+            </if>
+            <if test="outDh!=null">
+                #{outDh},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteCPSByQrId" >
+        DELETE FROM M_CPS
+        WHERE QRCode_ID = #{0}
+    </delete>
+
+    <select id="getCP2ShowData" resultType="com.qdhualing.qrcodetracker.bean.BigCpOutGetDataResult">
+         SELECT M_CPS2.CP_Name , M_CPS2.YLPC , M_CPS2.SCPC , M_CPS2.SC_Time as scDate , M_CPS2.GG , Pdt_Sort2.Sort_Name
+        FROM M_CPS2 LEFT JOIN Pdt_Sort2 on M_CPS2.SortID = Pdt_Sort2.ID
+        WHERE M_CPS2.QRCode_ID = #{0}
+    </select>
+
+    <delete id="deleteCPSByCps2QrId" >
+        DELETE FROM M_CPS
+        WHERE CPS2_QRCode = #{0}
+    </delete>
+
+    <delete id="deleteCPS2ByQrId" >
+        DELETE FROM M_CPS2
+        WHERE QRCode_ID = #{0}
+    </delete>
+
+    <insert id="insertCPOut" parameterType="com.qdhualing.qrcodetracker.bean.BigCpOutParam">
+        insert into M_CPOut
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="cpName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="fhDate!=null">
+                FHDate,
+            </if>
+            DWZL,
+            <if test="fhr!=null">
+                FHR,
+            </if>
+            <if test="outDh!=null">
+                OutDh,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="cpName!=null">
+                #{cpName},
+            </if>
+            #{sortId},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="fhDate!=null">
+                #{fhDate},
+            </if>
+            #{dwzl},
+            <if test="fhr!=null">
+                #{fhr},
+            </if>
+            <if test="outDh!=null">
+                #{outDh},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCPIn2" parameterType="com.qdhualing.qrcodetracker.bean.BigCpBean">
+        UPDATE M_CPIn2
+        SET
+        SmlPk1	= #{smlPk1},
+        SmlPk2	= #{smlPk2},
+        SmlPk3	= #{smlPk3},
+        SmlPk4		= #{smlPk4},
+        SmlPk5		= #{smlPk5},
+        SmlPk6	= #{smlPk6},
+        SmlPk7	= #{smlPk7},
+        SmlPk8		= #{smlPk8},
+        SmlPk9		= #{smlPk9},
+        SmlPk10		= #{smlPk10},
+        SmlPk11		= #{smlPk11},
+        SmlPk12		= #{smlPk12},
+        SmlPk13		= #{smlPk13},
+        SmlPk14		= #{smlPk14},
+        SmlPk15		= #{smlPk15},
+        SmlPk16		= #{smlPk16},
+        SmlPk17		= #{smlPk17},
+        SmlPk18		= #{smlPk18},
+        SmlPk19		= #{smlPk19},
+        SmlPk20		= #{smlPk20},
+        SmlPk21		= #{smlPk21},
+        SmlPk22		= #{smlPk22},
+        SmlPk23	= #{smlPk23},
+        SmlPk24	= #{smlPk24},
+        SmlPk25		= #{smlPk25},
+        SmlPk26		= #{smlPk26},
+        SmlPk27		= #{smlPk27},
+        SmlPk28		= #{smlPk28},
+        SmlPk29		= #{smlPk29},
+        SmlPk30		= #{smlPk30},
+        SmlPk31	= #{smlPk31},
+        SmlPk32		= #{smlPk32},
+        SmlPk33		= #{smlPk33},
+        SmlPk34		= #{smlPk34},
+        SmlPk35		= #{smlPk35},
+        SmlPk36		= #{smlPk36},
+        SmlPk37		= #{smlPk37},
+        SmlPk38	= #{smlPk38},
+        SmlPk39	= #{smlPk39},
+        SmlPk40		= #{smlPk40},
+        SmlPk41		= #{smlPk41},
+        SmlPk42		= #{smlPk42},
+        SmlPk43	= #{smlPk43},
+        SmlPk44		= #{smlPk44},
+        SmlPk45		= #{smlPk45},
+        SmlPk46	= #{smlPk46},
+        SmlPk47		= #{smlPk47},
+        SmlPk48		= #{smlPk48},
+        SmlPk49		= #{smlPk49},
+        SmlPk50		= #{smlPk50}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+
+    <update id="updateCPS2" parameterType="com.qdhualing.qrcodetracker.bean.BigCpBean">
+      UPDATE M_CPS2
+      SET
+        Now_Num = #{nowNum},
+        SmlPk1	= #{smlPk1},
+        SmlPk2	= #{smlPk2},
+        SmlPk3	= #{smlPk3},
+      SmlPk4		= #{smlPk4},
+      SmlPk5		= #{smlPk5},
+      SmlPk6	= #{smlPk6},
+      SmlPk7	= #{smlPk7},
+SmlPk8		= #{smlPk8},
+SmlPk9		= #{smlPk9},
+SmlPk10		= #{smlPk10},
+SmlPk11		= #{smlPk11},
+SmlPk12		= #{smlPk12},
+SmlPk13		= #{smlPk13},
+SmlPk14		= #{smlPk14},
+SmlPk15		= #{smlPk15},
+SmlPk16		= #{smlPk16},
+SmlPk17		= #{smlPk17},
+SmlPk18		= #{smlPk18},
+SmlPk19		= #{smlPk19},
+SmlPk20		= #{smlPk20},
+SmlPk21		= #{smlPk21},
+SmlPk22		= #{smlPk22},
+SmlPk23	= #{smlPk23},
+SmlPk24	= #{smlPk24},
+SmlPk25		= #{smlPk25},
+SmlPk26		= #{smlPk26},
+SmlPk27		= #{smlPk27},
+SmlPk28		= #{smlPk28},
+SmlPk29		= #{smlPk29},
+SmlPk30		= #{smlPk30},
+SmlPk31	= #{smlPk31},
+SmlPk32		= #{smlPk32},
+SmlPk33		= #{smlPk33},
+SmlPk34		= #{smlPk34},
+SmlPk35		= #{smlPk35},
+SmlPk36		= #{smlPk36},
+SmlPk37		= #{smlPk37},
+SmlPk38	= #{smlPk38},
+SmlPk39	= #{smlPk39},
+SmlPk40		= #{smlPk40},
+SmlPk41		= #{smlPk41},
+SmlPk42		= #{smlPk42},
+SmlPk43	= #{smlPk43},
+SmlPk44		= #{smlPk44},
+SmlPk45		= #{smlPk45},
+      SmlPk46	= #{smlPk46},
+      SmlPk47		= #{smlPk47},
+      SmlPk48		= #{smlPk48},
+        SmlPk49		= #{smlPk49},
+        SmlPk50		= #{smlPk50}
+      WHERE QRCode_ID = #{qRCodeID}
+    </update>
+
+    <select id="getCPS2" resultType="com.qdhualing.qrcodetracker.bean.BigCpBean">
+        SELECT *
+        FROM M_CPS2
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <insert id="insertCPIn" parameterType="com.qdhualing.qrcodetracker.bean.SmallCPINParam">
+        insert into M_CPIn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            SHL,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            BZ,
+            <if test="indh!=null">
+                InDh,
+            </if>
+            <if test="cPS2QRCode!=null">
+                CPS2_QRCode,
+            </if>
+            <if test="yl1!=null">
+                Yl_1,
+            </if>
+            <if test="yl2!=null">
+                Yl_2,
+            </if>
+            <if test="yl3!=null">
+                Yl_3,
+            </if>
+            <if test="yl4!=null">
+                Yl_4,
+            </if>
+            <if test="yl5!=null">
+                Yl_5,
+            </if>
+            <if test="yl6!=null">
+                Yl_6,
+            </if>
+            <if test="yl7!=null">
+                Yl_7,
+            </if>
+            <if test="yl8!=null">
+                Yl_8,
+            </if>
+            <if test="yl9!=null">
+                Yl_9,
+            </if>
+            <if test="yl10!=null">
+                Yl_10,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            #{sortID},
+            #{shl},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            #{bz},
+            <if test="indh!=null">
+                #{indh},
+            </if>
+            <if test="cPS2QRCode!=null">
+                #{cPS2QRCode},
+            </if>
+            <if test="yl1!=null">
+                #{yl1},
+            </if>
+            <if test="yl2!=null">
+                #{yl2},
+            </if>
+            <if test="yl3!=null">
+                #{yl3},
+            </if>
+            <if test="yl4!=null">
+                #{yl4},
+            </if>
+            <if test="yl5!=null">
+                #{yl5},
+            </if>
+            <if test="yl6!=null">
+                #{yl6},
+            </if>
+            <if test="yl7!=null">
+                #{yl7},
+            </if>
+            <if test="yl8!=null">
+                #{yl8},
+            </if>
+            <if test="yl9!=null">
+                #{yl9},
+            </if>
+            <if test="yl10!=null">
+                #{yl10},
+            </if>
+        </trim>
+    </insert>
+
+
+    <insert id="insertCPS" parameterType="com.qdhualing.qrcodetracker.bean.SmallCPINParam">
+        insert into M_CPS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            <if test="cPS2QRCode!=null">
+                CPS2_QRCode,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            #{sortID},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            <if test="cPS2QRCode!=null">
+                #{cPS2QRCode},
+            </if>
+            <if test="gg!=null">
+                #{gg},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findCPS" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_CPS
+        WHERE QRCode_ID = #{0}
+    </select>
+    <select id="getBigCpData" resultType="com.qdhualing.qrcodetracker.bean.BigCpBean">
+        SELECT *
+        FROM M_CPS2
+    </select>
+
+    <insert id="insertCPS2" parameterType="com.qdhualing.qrcodetracker.bean.BigCPINParam">
+        insert into M_CPS2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="jybz!=null">
+                JYBZ,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            #{sortID},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="jybz!=null">
+                #{jybz},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            <if test="dw!=null">
+                #{gg},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="findCPS2" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_CPS2
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <insert id="insertCPIn2" parameterType="com.qdhualing.qrcodetracker.bean.BigCPINParam">
+        insert into M_CPIn2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                CP_Name,
+            </if>
+            SortID,
+            <if test="cpCode!=null">
+                CP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="jybz!=null">
+                JYBZ,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+            <if test="indh!=null">
+                InDh,
+            </if>
+            BZ,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            #{sortID},
+            <if test="cpCode!=null">
+                #{cpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="jybz!=null">
+                #{jybz},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            <if test="dw!=null">
+                #{gg},
+            </if>
+            <if test="indh!=null">
+                #{indh},
+            </if>
+            #{bz},
+        </trim>
+    </insert>
+
+    <insert id="createBCP_CKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateBCPCKDParam">
+        insert into Ckd_Bcp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                OutDh,
+            </if>
+            <if test="lhDw!=null">
+                LhDw,
+            </if>
+            <if test="lhRq!=null">
+                LhRq,
+            </if>
+            <if test="fhr!=null">
+                FhR,
+            </if>
+            <if test="fhFzr!=null">
+                FhFzr,
+            </if>
+            <if test="lhr!=null">
+                LhR,
+            </if>
+            <if test="lhFzr!=null">
+                LhFzr,
+            </if>
+            <if test="remark!=null">
+                Remark,
+            </if>
+            <if test="jhDw!=null">
+                JhDw,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outDh!=null">
+                #{outDh},
+            </if>
+            <if test="lhDw!=null">
+                #{lhDw},
+            </if>
+            <if test="lhRq!=null">
+                #{lhRq},
+            </if>
+            <if test="fhr!=null">
+                #{fhr},
+            </if>
+            <if test="fhFzr!=null">
+                #{fhFzr},
+            </if>
+            <if test="lhr!=null">
+                #{lhr},
+            </if>
+            <if test="lhFzr!=null">
+                #{lhFzr},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+            <if test="jhDw!=null">
+                #{jhDw},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateBCPTempSByBCPTk" parameterType="com.qdhualing.qrcodetracker.bean.BCPTKParam">
+        UPDATE M_BCPTempS
+        SET SHL = SHL - #{shl}
+        WHERE QRCode_ID = #{qrCodeId};
+    </update>
+
+    <update id="updateBCPSByTk" parameterType="com.qdhualing.qrcodetracker.bean.BCPTKParam">
+        UPDATE M_BCPS
+        SET SHL = SHL + #{shl}
+        WHERE QRCode_ID = #{qrCodeId}
+    </update>
+
+    <insert id="insertBCPS" parameterType="com.qdhualing.qrcodetracker.bean.BCPTKParam">
+        insert into M_BCPS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                ProductName,
+            </if>
+            <if test="sortID!=null">
+                SortID,
+            </if>
+            <if test="bcpCode!=null">
+                BCP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            SHL,
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="ksTime!=null">
+                KS_Time,
+            </if>
+            <if test="wcTime!=null">
+                WC_Time,
+            </if>
+            <if test="gx!=null">
+                GX,
+            </if>
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="cheJian!=null">
+                CheJian,
+            </if>
+            <if test="yl1!=null">
+                Yl_1,
+            </if>
+            <if test="yl2!=null">
+                Yl_2,
+            </if>
+            <if test="yl3!=null">
+                Yl_3,
+            </if>
+            <if test="yl4!=null">
+                Yl_4,
+            </if>
+            <if test="yl5!=null">
+                Yl_5,
+            </if>
+            <if test="yl6!=null">
+                Yl_6,
+            </if>
+            <if test="yl7!=null">
+                Yl_7,
+            </if>
+            <if test="yl8!=null">
+                Yl_8,
+            </if>
+            <if test="yl9!=null">
+                Yl_9,
+            </if>
+            <if test="yl10!=null">
+                Yl_10,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            <if test="sortID!=null">
+                #{sortID},
+            </if>
+            <if test="bcpCode!=null">
+                #{bcpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            #{shl},
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="ksTime!=null">
+                #{ksTime},
+            </if>
+            <if test="wcTime!=null">
+                #{wcTime},
+            </if>
+            <if test="gx!=null">
+                #{gx},
+            </if>
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="cheJian!=null">
+                #{cheJian},
+            </if>
+            <if test="yl1!=null">
+                #{yl1},
+            </if>
+            <if test="yl2!=null">
+                #{yl2},
+            </if>
+            <if test="yl3!=null">
+                #{yl3},
+            </if>
+            <if test="yl4!=null">
+                #{yl4},
+            </if>
+            <if test="yl5!=null">
+                #{yl5},
+            </if>
+            <if test="yl6!=null">
+                #{yl6},
+            </if>
+            <if test="yl7!=null">
+                #{yl7},
+            </if>
+            <if test="yl8!=null">
+                #{yl8},
+            </if>
+            <if test="yl9!=null">
+                #{yl9},
+            </if>
+            <if test="yl10!=null">
+                #{yl10},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getBCPSCount" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_BCPS
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <insert id="insertBCPBk" parameterType="com.qdhualing.qrcodetracker.bean.BCPTKParam">
+        insert into M_BCPBk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                ProductName,
+            </if>
+            <if test="sortID!=null">
+                SortID,
+            </if>
+            <if test="bcpCode!=null">
+                BCP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            SHL,
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="ksTime!=null">
+                KS_Time,
+            </if>
+            <if test="wcTime!=null">
+                WC_Time,
+            </if>
+            <if test="gx!=null">
+                GX,
+            </if>
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="cheJian!=null">
+                CheJian,
+            </if>
+            <if test="backDh!=null">
+                BackDh,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+            <if test="tkTime!=null">
+                TK_Time,
+            </if>
+            <if test="thr!=null">
+                Thr,
+            </if>
+            <if test="shrr!=null">
+                Shr,
+            </if>
+            <if test="thDw!=null">
+                ThDw,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            <if test="sortID!=null">
+                #{sortID},
+            </if>
+            <if test="bcpCode!=null">
+                #{bcpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            #{shl},
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="ksTime!=null">
+                #{ksTime},
+            </if>
+            <if test="wcTime!=null">
+                #{wcTime},
+            </if>
+            <if test="gx!=null">
+                #{gx},
+            </if>
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="cheJian!=null">
+                #{cheJian},
+            </if>
+            <if test="backDh!=null">
+                #{backDh},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+            <if test="tkTime!=null">
+                #{tkTime},
+            </if>
+            <if test="thr!=null">
+                #{thr},
+            </if>
+            <if test="shrr!=null">
+                #{shrr},
+            </if>
+            <if test="thDw!=null">
+                #{thDw},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getTKDBCPBean" resultType="com.qdhualing.qrcodetracker.bean.TKDBCPBean">
+        SELECT *
+        FROM Tkd_Bcp
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getBCPTKShowData" resultType="com.qdhualing.qrcodetracker.bean.BCPTKShowDataResult">
+        SELECT M_BCPTempS.ProductName , M_BCPTempS.DWZL , M_BCPTempS.SHL , M_BCPTempS.YLPC , M_BCPTempS.SCPC , M_BCPTempS.SC_Time , M_BCPTempS.GG , M_BCPTempS.DW , Pdt_Sort2.Sort_Name
+        FROM M_BCPTempS LEFT JOIN Pdt_Sort2 on M_BCPTempS.SortID = Pdt_Sort2.ID
+        WHERE M_BCPTempS.QRCode_ID = #{0}
+    </select>
+
+    <insert id="createBCP_TKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateBCPTKDParam">
+        insert into Tkd_Bcp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="backDh!=null">
+                BackDh,
+            </if>
+            <if test="thDw!=null">
+                ThDw,
+            </if>
+            <if test="thRq!=null">
+                ThRq,
+            </if>
+            <if test="shrr!=null">
+                Shr,
+            </if>
+            <if test="shFzr!=null">
+                ShFzr,
+            </if>
+            <if test="thr!=null">
+                ThR,
+            </if>
+            <if test="thFzr!=null">
+                ThFzr,
+            </if>
+            <if test="remark!=null">
+                Remark,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="backDh!=null">
+                #{backDh},
+            </if>
+            <if test="thDw!=null">
+                #{thDw},
+            </if>
+            <if test="thRq!=null">
+                #{thRq},
+            </if>
+            <if test="shrr!=null">
+                #{shrr},
+            </if>
+            <if test="shFzr!=null">
+                #{shFzr},
+            </if>
+            <if test="thr!=null">
+                #{thr},
+            </if>
+            <if test="thFzr!=null">
+                #{thFzr},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateBcpTempSByTl" parameterType="com.qdhualing.qrcodetracker.bean.BcpThrowParam">
+        UPDATE M_BCPTempS
+        SET SHL = SHL - #{tlShl}
+        WHERE QRCode_ID = #{qrcodeId};
+    </update>
+
+    <delete id="deleteFromBcpTempS">
+        DELETE FROM M_BCPTempS
+        WHERE QRCode_ID = #{0}
+    </delete>
+
+    <update id="updateBcpTl" parameterType="com.qdhualing.qrcodetracker.bean.BcpThrowParam">
+        UPDATE M_BCPTl
+        SET SHL = SHL + #{tlShl}
+        WHERE QRCode_ID = #{qrcodeId};
+    </update>
+
+    <insert id="insertBcpTl" parameterType="com.qdhualing.qrcodetracker.bean.BcpThrowParam">
+        insert into M_BCPTl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrcodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                ProductName,
+            </if>
+            <if test="sortId!=null">
+                SortID,
+            </if>
+            <if test="bcpCode!=null">
+                BCP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+            SHL,
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="ksTime!=null">
+                KS_Time,
+            </if>
+            <if test="wcTime!=null">
+                WC_Time,
+            </if>
+            <if test="gx!=null">
+                GX,
+            </if>
+            <if test="cjId!=null">
+                CJ_ID,
+            </if>
+            <if test="gxId!=null">
+                GX_ID,
+            </if>
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+            <if test="tlTime!=null">
+                TL_Time,
+            </if>
+            <if test="cheJian!=null">
+                CheJian,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrcodeId!=null">
+                #{qrcodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            <if test="sortId!=null">
+                #{sortId},
+            </if>
+            <if test="bcpCode!=null">
+                #{bcpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="gg!=null">
+                #{gg},
+            </if>
+            #{tlShl},
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="ksTime!=null">
+                #{ksTime},
+            </if>
+            <if test="wcTime!=null">
+                #{wcTime},
+            </if>
+            <if test="gx!=null">
+                #{gx},
+            </if>
+            <if test="cjId!=null">
+                #{cjId},
+            </if>
+            <if test="gxId!=null">
+                #{gxId},
+            </if>
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+            <if test="tlTime!=null">
+                #{tlTime},
+            </if>
+            <if test="cheJian!=null">
+                #{cheJian},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getBcpTLDataCount" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_BCPTl
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <select id="getBcpTempS" resultType="com.qdhualing.qrcodetracker.bean.BCPTempSBean">
+        SELECT *
+        FROM M_BCPTempS
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <select id="getBcpTempSData" resultType="com.qdhualing.qrcodetracker.bean.BcpThrowShowDataResult">
+        SELECT M_BCPTempS.ProductName , M_BCPTempS.DWZL , M_BCPTempS.SHL , M_BCPTempS.YLPC , M_BCPTempS.SCPC , M_BCPTempS.SC_Time , M_BCPTempS.GG , M_BCPTempS.DW , Pdt_Sort2.Sort_Name
+        FROM M_BCPTempS LEFT JOIN Pdt_Sort2 on M_BCPTempS.SortID = Pdt_Sort2.ID
+        WHERE M_BCPTempS.QRCode_ID = #{0}
+    </select>
+
+    <update id="updateBCPTempS" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
+        UPDATE M_BCPTempS
+        SET SHL = SHL + #{shl}
+        WHERE QRCode_ID = #{qrCodeId};
+    </update>
+
+    <insert id="insertBCPTempS" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
+        insert into M_BCPTempS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                ProductName,
+            </if>
+            <if test="sortID!=null">
+                SortID,
+            </if>
+            <if test="bcpCode!=null">
+                BCP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+            SHL,
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="ksTime!=null">
+                KS_Time,
+            </if>
+            <if test="wcTime!=null">
+                WC_Time,
+            </if>
+            <if test="gx!=null">
+                GX,
+            </if>
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="jybz!=null">
+                JYBZ,
+            </if>
+            <if test="cheJian!=null">
+                CheJian,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            <if test="yl1!=null">
+                Yl_1,
+            </if>
+            <if test="yl2!=null">
+                Yl_2,
+            </if>
+            <if test="yl3!=null">
+                Yl_3,
+            </if>
+            <if test="yl4!=null">
+                Yl_4,
+            </if>
+            <if test="yl5!=null">
+                Yl_5,
+            </if>
+            <if test="yl6!=null">
+                Yl_6,
+            </if>
+            <if test="yl7!=null">
+                Yl_7,
+            </if>
+            <if test="yl8!=null">
+                Yl_8,
+            </if>
+            <if test="yl9!=null">
+                Yl_9,
+            </if>
+            <if test="yl10!=null">
+                Yl_10,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            <if test="sortID!=null">
+                #{sortID},
+            </if>
+            <if test="bcpCode!=null">
+                #{bcpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="gg!=null">
+                #{gg},
+            </if>
+            #{shl},
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="ksTime!=null">
+                #{ksTime},
+            </if>
+            <if test="wcTime!=null">
+                #{wcTime},
+            </if>
+            <if test="gx!=null">
+                #{gx},
+            </if>
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="jybz!=null">
+                #{jybz},
+            </if>
+            <if test="cheJian!=null">
+                #{cheJian},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            <if test="yl1!=null">
+                #{yl1},
+            </if>
+            <if test="yl2!=null">
+                #{yl2},
+            </if>
+            <if test="yl3!=null">
+                #{yl3},
+            </if>
+            <if test="yl4!=null">
+                #{yl4},
+            </if>
+            <if test="yl5!=null">
+                #{yl5},
+            </if>
+            <if test="yl6!=null">
+                #{yl6},
+            </if>
+            <if test="yl7!=null">
+                #{yl7},
+            </if>
+            <if test="yl8!=null">
+                #{yl8},
+            </if>
+            <if test="yl9!=null">
+                #{yl9},
+            </if>
+            <if test="yl10!=null">
+                #{yl10},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="findBCPTempS" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_BCPTempS
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <insert id="insertBCPIn" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
+        insert into M_BCPIn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                QRCode_ID,
+            </if>
+            <if test="productName!=null">
+                ProductName,
+            </if>
+            <if test="sortID!=null">
+                SortID,
+            </if>
+            <if test="bcpCode!=null">
+                BCP_Code,
+            </if>
+            <if test="ylpc!=null">
+                YLPC,
+            </if>
+            <if test="scpc!=null">
+                SCPC,
+            </if>
+            <if test="gg!=null">
+                GG,
+            </if>
+            SHL,
+            <if test="scTime!=null">
+                SC_Time,
+            </if>
+            DWZL,
+            <if test="ksTime!=null">
+                KS_Time,
+            </if>
+            <if test="wcTime!=null">
+                WC_Time,
+            </if>
+            <if test="gx!=null">
+                GX,
+            </if>
+            <if test="czy!=null">
+                CZY,
+            </if>
+            <if test="zjy!=null">
+                ZJY,
+            </if>
+            <if test="jyzt!=null">
+                JYZT,
+            </if>
+            <if test="jybz!=null">
+                JYBZ,
+            </if>
+            <if test="bz!=null">
+                BZ,
+            </if>
+            <if test="cheJian!=null">
+                CheJian,
+            </if>
+            <if test="indh!=null">
+                InDh,
+            </if>
+            <if test="dw!=null">
+                DW,
+            </if>
+            <if test="yl1!=null">
+                Yl_1,
+            </if>
+            <if test="yl2!=null">
+                Yl_2,
+            </if>
+            <if test="yl3!=null">
+                Yl_3,
+            </if>
+            <if test="yl4!=null">
+                Yl_4,
+            </if>
+            <if test="yl5!=null">
+                Yl_5,
+            </if>
+            <if test="yl6!=null">
+                Yl_6,
+            </if>
+            <if test="yl7!=null">
+                Yl_7,
+            </if>
+            <if test="yl8!=null">
+                Yl_8,
+            </if>
+            <if test="yl9!=null">
+                Yl_9,
+            </if>
+            <if test="yl10!=null">
+                Yl_10,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">
+                #{qrCodeId},
+            </if>
+            <if test="productName!=null">
+                #{productName},
+            </if>
+            <if test="sortID!=null">
+                #{sortID},
+            </if>
+            <if test="bcpCode!=null">
+                #{bcpCode},
+            </if>
+            <if test="ylpc!=null">
+                #{ylpc},
+            </if>
+            <if test="scpc!=null">
+                #{scpc},
+            </if>
+            <if test="gg!=null">
+                #{gg},
+            </if>
+            #{shl},
+            <if test="scTime!=null">
+                #{scTime},
+            </if>
+            #{dwzl},
+            <if test="ksTime!=null">
+                #{ksTime},
+            </if>
+            <if test="wcTime!=null">
+                #{wcTime},
+            </if>
+            <if test="gx!=null">
+                #{gx},
+            </if>
+            <if test="czy!=null">
+                #{czy},
+            </if>
+            <if test="zjy!=null">
+                #{zjy},
+            </if>
+            <if test="jyzt!=null">
+                #{jyzt},
+            </if>
+            <if test="jybz!=null">
+                #{jybz},
+            </if>
+            <if test="bz!=null">
+                #{bz},
+            </if>
+            <if test="cheJian!=null">
+                #{cheJian},
+            </if>
+            <if test="indh!=null">
+                #{indh},
+            </if>
+            <if test="dw!=null">
+                #{dw},
+            </if>
+            <if test="yl1!=null">
+                #{yl1},
+            </if>
+            <if test="yl2!=null">
+                #{yl2},
+            </if>
+            <if test="yl3!=null">
+                #{yl3},
+            </if>
+            <if test="yl4!=null">
+                #{yl4},
+            </if>
+            <if test="yl5!=null">
+                #{yl5},
+            </if>
+            <if test="yl6!=null">
+                #{yl6},
+            </if>
+            <if test="yl7!=null">
+                #{yl7},
+            </if>
+            <if test="yl8!=null">
+                #{yl8},
+            </if>
+            <if test="yl9!=null">
+                #{yl9},
+            </if>
+            <if test="yl10!=null">
+                #{yl10},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateWLTl" parameterType="com.qdhualing.qrcodetracker.bean.WLThrowParam">
+        UPDATE M_WLTl
+        SET SHL = SHL + #{tlShl}
+        WHERE QRCode_ID = #{qrcodeId};
+    </update>
+
+    <select id="getWLTLDataCount" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM M_WLTl
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <select id="getWLTLDataByGxId" resultType="com.qdhualing.qrcodetracker.bean.TLYLBean">
+        SELECT ID , QRCode_ID , ProductName
+        FROM M_WLTl
+        WHERE GX_ID = #{0}
+    </select>
+
+    <select id="getBCPTLDataByGxId" resultType="com.qdhualing.qrcodetracker.bean.TLYLBean">
+        SELECT ID , QRCode_ID , ProductName
+        FROM M_BCPTl
+        WHERE GX_ID = #{0}
+    </select>
+
+    <insert id="createBCP_RKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateBCPRKDParam">
+        insert into Rkd_Bcp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="JhDw!=null">
+                JhDw,
+            </if>
+            <if test="ShRq!=null">
+                ShRq,
+            </if>
+            <if test="InDh!=null">
+                InDh,
+            </if>
+            <if test="Shr!=null">
+                Shr,
+            </if>
+            <if test="Jhr!=null">
+                Jhr,
+            </if>
+            <if test="ShFzr!=null">
+                ShFzr,
+            </if>
+            <if test="JhFzr!=null">
+                JhFzr,
+            </if>
+            <if test="remark!=null">
+                Remark,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="JhDw!=null">
+                #{JhDw},
+            </if>
+            <if test="ShRq!=null">
+                #{ShRq},
+            </if>
+            <if test="InDh!=null">
+                #{InDh},
+            </if>
+            <if test="Shr!=null">
+                #{Shr},
+            </if>
+            <if test="Jhr!=null">
+                #{Jhr},
+            </if>
+            <if test="ShFzr!=null">
+                #{ShFzr},
+            </if>
+            <if test="JhFzr!=null">
+                #{JhFzr},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getGXData" resultType="com.qdhualing.qrcodetracker.bean.GXBean">
+        SELECT *
+        FROM Hl_GongXu
+        WHERE id IN
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getCJData" resultType="com.qdhualing.qrcodetracker.bean.CJBean">
+        SELECT *
+        FROM Hl_CheJian
+    </select>
+
+    <update id="updateWLTempSByTl" parameterType="com.qdhualing.qrcodetracker.bean.WLThrowParam">
+        UPDATE M_WLTempS
+        SET SHL = SHL - #{tlShl}
+        WHERE QRCode_ID = #{qrcodeId};
+    </update>
+
+    <insert id="insertWLTl" parameterType="com.qdhualing.qrcodetracker.bean.WLThrowParam">
+        insert into M_WLTl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrcodeId!=null">QRCode_ID,</if>
+            <if test="productName!=null">ProductName,</if>
+            DWZL,
+            <if test="sortId!=null">SortID,</if>
+            <if test="wlCode!=null">WL_Code,</if>
+            <if test="ylpc!=null">YLPC,</if>
+            <if test="gg!=null">GG,</if>
+            <if test="dw!=null">DW,</if>
+            <if test="cj!=null">TlCJ,</if>
+            <if test="gx!=null">Tl_Gx,</if>
+            <if test="cjId!=-1">CJ_ID,</if>
+            <if test="gxId!=-1">GX_ID,</if>
+            SHL,
+            <if test="czy!=null">CZY,</if>
+            <if test="tlTime!=null">Tl_TIME,</if>
+            <if test="remark!=null">BZ,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrcodeId!=null">#{qrcodeId},</if>
+            <if test="productName!=null">#{productName},</if>
+            #{dwzl},
+            <if test="sortId!=null">#{sortId},</if>
+            <if test="wlCode!=null">#{wlCode},</if>
+            <if test="ylpc!=null">#{ylpc},</if>
+            <if test="gg!=null">#{gg},</if>
+            <if test="dw!=null">#{dw},</if>
+            <if test="cj!=null">#{cj},</if>
+            <if test="gx!=null">#{gx},</if>
+            <if test="cjId!=null">#{cjId},</if>
+            <if test="gxId!=null">#{gxId},</if>
+            #{tlShl},
+            <if test="czy!=null">#{czy},</if>
+            <if test="tlTime!=null">#{tlTime},</if>
+            <if test="remark!=null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWLTempSByTk" parameterType="com.qdhualing.qrcodetracker.bean.WLTKParam">
+        UPDATE M_WLTempS
+        SET SHL = SHL - #{tkShL}
+        WHERE QRCode_ID = #{qrCodeId};
+    </update>
+
+    <delete id="deleteFromWLTempS">
+        DELETE FROM M_WLTempS
+        WHERE QRCode_ID = #{0}
+    </delete>
+
+    <update id="updateWLSByTk" parameterType="com.qdhualing.qrcodetracker.bean.WLTKParam">
+        UPDATE M_WLS
+        SET SHL = SHL + #{tkShL}
+        WHERE QRCode_ID = #{qrCodeId};
+    </update>
+
+    <insert id="insertWLBk" parameterType="com.qdhualing.qrcodetracker.bean.WLTKParam">
+        insert into M_WLBk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">QRCode_ID,</if>
+            <if test="productName!=null">ProductName,</if>
+            DWZL,
+            <if test="sortId!=null">SortID,</if>
+            <if test="wlCode!=null">WL_Code,</if>
+            <if test="ylpc!=null">YLPC,</if>
+            <if test="gg!=null">GG,</if>
+            <if test="dw!=null">DW,</if>
+            <if test="tkbm!=null">TKBM,</if>
+            SHL,
+            <if test="flr!=null">FLR,</if>
+            <if test="llr!=null">LLR,</if>
+            <if test="time!=null">TIME,</if>
+            <if test="outDh!=null">OutDh,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="qrCodeId!=null">#{qrCodeId},</if>
+            <if test="productName!=null">#{productName},</if>
+            #{dwzl},
+            <if test="sortId!=null">#{sortId},</if>
+            <if test="wlCode!=null">#{wlCode},</if>
+            <if test="ylpc!=null">#{ylpc},</if>
+            <if test="gg!=null">#{gg},</if>
+            <if test="dw!=null">#{dw},</if>
+            <if test="tkbm!=null">#{tkbm},</if>
+            #{tkShL},
+            <if test="flr!=null">#{flr},</if>
+            <if test="llr!=null">#{llr},</if>
+            <if test="time!=null">#{time},</if>
+            <if test="outDh!=null">#{outDh},</if>
+        </trim>
+    </insert>
+
+    <select id="getWLTempS" resultType="com.qdhualing.qrcodetracker.bean.WLTempSBean">
+        SELECT *
+        FROM M_WLTempS
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <select id="findWL_TKD" resultType="com.qdhualing.qrcodetracker.bean.TKDWLBean">
+        SELECT *
+        FROM Tkd_Wl
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getWLTempSData" resultType="com.qdhualing.qrcodetracker.bean.WLTKShowDataResult">
+        SELECT M_WLTempS.ProductName , M_WLTempS.DWZL , M_WLTempS.SHL , M_WLTempS.CHD , M_WLTempS.GG , M_WLTempS.DW , Pdt_Sort2.Sort_Name
+        FROM M_WLTempS LEFT JOIN Pdt_Sort2 on M_WLTempS.SortID = Pdt_Sort2.ID
+        WHERE M_WLTempS.QRCode_ID = #{0}
+    </select>
+
+
     <insert id="createWL_TKD" parameterType="com.qdhualing.qrcodetracker.bean.CreateWLTKDParam">
         insert into Tkd_Wl
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,7 +1974,6 @@
         WHERE QRCode_ID = #{0}
     </select>
 
-
     <insert id="insertWLTempS" parameterType="com.qdhualing.qrcodetracker.bean.WLOutParam">
         insert into M_WLTempS
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,6 +1986,7 @@
             <if test="gg!=null">GG,</if>
             SHL,
             <if test="llr!=null">CZY,</if>
+            <if test="chd!=null">CHD,</if>
             <if test="time!=null">LL_Time,</if>
         </trim>
         values
@@ -99,6 +2000,7 @@
             <if test="gg!=null">#{gg},</if>
             #{ckShL},
             <if test="llr!=null">#{llr},</if>
+            <if test="chd!=null">#{chd},</if>
             <if test="time!=null">#{time},</if>
         </trim>
     </insert>

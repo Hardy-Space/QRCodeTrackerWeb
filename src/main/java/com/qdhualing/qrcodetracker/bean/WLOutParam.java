@@ -24,10 +24,18 @@ public class WLOutParam {
     private String outDh;
     private String dw;
     private int bz;
-
+    private String chd ;
 
     private float ckShL ;
     private String llbm ;
+
+    public String getChd() {
+        return chd;
+    }
+
+    public void setChd(String chd) {
+        this.chd = chd;
+    }
 
     public String getQrCodeId() {
         return qrCodeId;

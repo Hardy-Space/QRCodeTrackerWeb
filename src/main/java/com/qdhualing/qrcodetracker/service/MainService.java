@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class MainService {
     @Autowired
     private MainDao mainDao;
 
-    public DataResult getMaterialInInputedData(GetNeedInputedDataParams params) {
+	public DataResult getMaterialInInputedData(GetNeedInputedDataParams params) {
 
         DataResult result = mainDao.getMaterialInData(params.getId());
         return result;
@@ -178,5 +179,245 @@ public class MainService {
 
 	public int createWL_TKD(CreateWLTKDParam tkdParam) {
 		return mainDao.createWL_TKD(tkdParam);
+	}
+
+	public WLTKShowDataResult getWLTempSData(String qrcodeId) {
+		WLTKShowDataResult result = null;
+		result = mainDao.getWLTempSData(qrcodeId);
+		return result;
+	}
+
+	public TKDWLBean findWL_TKD(String outDh) {
+		return mainDao.findWL_TKD(outDh);
+	}
+
+	public WLTempSBean getWLTempS(String qrCodeId) {
+		return mainDao.getWLTempS(qrCodeId);
+	}
+
+	public int insertWLBk(WLTKParam wlTKParam) {
+		return mainDao.insertWLBk(wlTKParam);
+	}
+
+	public int updateWLSByTk(WLTKParam wlTKParam) {
+		return mainDao.updateWLSByTk(wlTKParam);
+	}
+
+	public int deleteFromWLTempS(String qrCodeId) {
+		return mainDao.deleteFromWLTempS(qrCodeId);
+	}
+
+	public int updateWLTempSByTk(WLTKParam wlTKParam) {
+		return mainDao.updateWLTempSByTk(wlTKParam);
+	}
+
+	public int insertWLTl(WLThrowParam wlTLParam) {
+		return mainDao.insertWLTl(wlTLParam);
+	}
+
+	public int updateWLTempSByTl(WLThrowParam wlTLParam) {
+		return mainDao.updateWLTempSByTl(wlTLParam);
+	}
+
+	public GXResult getGXData(String[] cjIdArray) {
+		List<GXBean> beans =  mainDao.getGXData(cjIdArray);
+		GXResult result = new GXResult();
+		result.setGxBeans(beans);
+		return result;
+	}
+
+	public CJResult getCJData() {
+		List<CJBean> beans =  mainDao.getCJData();
+		CJResult result = new CJResult();
+		result.setCjBeans(beans);
+		return result;
+	}
+
+	public int createBCP_RKD(CreateBCPRKDParam rkdParam) {
+		return  mainDao.createBCP_RKD(rkdParam);
+	}
+
+	public SXYLResult getSXYLData(int gxId) {
+    	//获取该工序下的物料
+		List<TLYLBean> beans1 =  mainDao.getWLTLDataByGxId(gxId);
+		//获取该工序下的半成品
+		List<TLYLBean> beans2 =  mainDao.getBCPTLDataByGxId(gxId);
+		List<TLYLBean> bb = new ArrayList<TLYLBean>();
+		bb.addAll(beans1);
+		bb.addAll(beans2);
+		SXYLResult result = new SXYLResult();
+		result.setTlylList(bb);
+		return result;
+	}
+
+	public int getWLTLDataCount(String qrcodeId) {
+    	return mainDao.getWLTLDataCount(qrcodeId);
+	}
+
+	public int updateWLTl(WLThrowParam wlTLParam) {
+    	return mainDao.updateWLTl(wlTLParam);
+	}
+
+	public int insertBCPIn(BCPINParam bcpInParam) {
+		return mainDao.insertBCPIn(bcpInParam);
+	}
+
+	public int findBCPTempS(String qrCodeID) {
+		return mainDao.findBCPTempS(qrCodeID);
+	}
+
+	public int insertBCPTempS(BCPINParam bcpInParam) {
+		return mainDao.insertBCPTempS(bcpInParam);
+	}
+
+	public int updateBCPTempS(BCPINParam bcpInParam) {
+		return mainDao.updateBCPTempS(bcpInParam);
+	}
+
+	public BcpThrowShowDataResult getBcpTempSData(String qrcodeId) {
+		BcpThrowShowDataResult result = null;
+		result = mainDao.getBcpTempSData(qrcodeId);
+		return result;
+	}
+
+	public BCPTempSBean getBcpTempS(String qrcodeId) {
+		return mainDao.getBcpTempS(qrcodeId);
+	}
+
+	public int getBcpTLDataCount(String qrcodeId) {
+		return mainDao.getBcpTLDataCount(qrcodeId);
+	}
+
+	public int insertBcpTl(BcpThrowParam bcpTLParam) {
+		return mainDao.insertBcpTl(bcpTLParam);
+	}
+
+	public int updateBcpTl(BcpThrowParam bcpTLParam) {
+		return mainDao.updateBcpTl(bcpTLParam);
+	}
+
+	public int deleteFromBcpTempS(String qrcodeId) {
+		return mainDao.deleteFromBcpTempS(qrcodeId);
+	}
+
+	public int updateBcpTempSByTl(BcpThrowParam bcpTLParam) {
+		return mainDao.updateBcpTempSByTl(bcpTLParam);
+	}
+
+	public int createBCP_TKD(CreateBCPTKDParam param) {
+		return mainDao.createBCP_TKD(param);
+	}
+
+	public BCPTKShowDataResult getBCPTKShowData(String qrcodeId) {
+		BCPTKShowDataResult result = null;
+		result = mainDao.getBCPTKShowData(qrcodeId);
+		return result;
+	}
+
+	public TKDBCPBean getTKDBCPBean(String backDh) {
+		return mainDao.getTKDBCPBean(backDh);
+	}
+
+	public int insertBCPBk(BCPTKParam param) {
+		return mainDao.insertBCPBk(param);
+	}
+
+	public int getBCPSCount(String qrCodeId) {
+		return mainDao.getBCPSCount(qrCodeId);
+	}
+
+	public int insertBCPS(BCPTKParam param) {
+		return mainDao.insertBCPS(param);
+	}
+
+	public int updateBCPSByTk(BCPTKParam param) {
+		return mainDao.updateBCPSByTk(param);
+	}
+
+	public int updateBCPTempSByBCPTk(BCPTKParam param) {
+		return mainDao.updateBCPTempSByBCPTk(param);
+	}
+
+	public int createBCP_CKD(CreateBCPCKDParam param) {
+		return mainDao.createBCP_CKD(param);
+	}
+
+	public int insertCPIn2(BigCPINParam inParam) {
+		return mainDao.insertCPIn2(inParam);
+	}
+
+	public int findCPS2(String qrCodeId) {
+		return mainDao.findCPS2(qrCodeId);
+	}
+
+	public int insertCPS2(BigCPINParam inParam) {
+		return mainDao.insertCPS2(inParam);
+	}
+
+	public BigCpResult getBigCpData() {
+		List<BigCpBean> beans =  mainDao.getBigCpData();
+		BigCpResult result = new BigCpResult();
+		result.setBeans(beans);
+		return result;
+	}
+
+	public int findCPS(String qrCodeId) {
+		return mainDao.findCPS(qrCodeId);
+	}
+
+	public int insertCPS(SmallCPINParam inParam) {
+		return mainDao.insertCPS(inParam);
+	}
+
+	public int updateCPS(SmallCPINParam inParam) {
+		return mainDao.updateCPS(inParam);
+	}
+
+	public int insertCPIn(SmallCPINParam inParam) {
+		return mainDao.insertCPIn(inParam);
+	}
+
+	public int updateCPS2(BigCpBean bigCpBean) {
+		return mainDao.updateCPS2(bigCpBean);
+	}
+
+	public BigCpBean getCPS2(String bigCpQrId) {
+		return mainDao.getCPS2(bigCpQrId);
+	}
+
+	public int updateCPIn2(BigCpBean bigCpBean) {
+		return mainDao.updateCPIn2(bigCpBean);
+	}
+
+	public int insertCPOut(BigCpOutParam param) {
+		return mainDao.insertCPOut(param);
+	}
+
+	public int deleteCPS2ByQrId(String qrCodeId) {
+		return mainDao.deleteCPS2ByQrId(qrCodeId);
+	}
+
+	public int deleteCPSByCps2QrId(String qrCodeId) {
+		return mainDao.deleteCPSByCps2QrId(qrCodeId);
+	}
+
+	public BigCpOutGetDataResult getCP2ShowData(String qrCodeId) {
+		return mainDao.getCP2ShowData(qrCodeId);
+	}
+
+	public SmallCpOutGetDataResult getSmallCpOutData(String qrCodeId) {
+		return mainDao.getSmallCpOutData(qrCodeId);
+	}
+
+	public SmallCpBean getCPS(String qrCodeId) {
+		return mainDao.getCPS(qrCodeId);
+	}
+
+	public int deleteCPSByQrId(String qrCodeId) {
+		return mainDao.deleteCPSByQrId(qrCodeId);
+	}
+
+	public int insertCPOutBySmallParam(SmallCpOutParam param) {
+		return mainDao.insertCPOutBySmallParam(param);
 	}
 }
