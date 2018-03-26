@@ -2,6 +2,41 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getComponentBeansFromBcp" resultType="com.qdhualing.qrcodetracker.bean.ComponentBean">
+        SELECT DISTINCT QRCode_ID , ProductName as name
+        from M_BCPIn
+        WHERE QRCode_ID in
+        <foreach collection="list" item="qrCodeId" index="index" open="(" close=")" separator=",">
+            #{qrCodeId}
+        </foreach>
+    </select>
+    <select id="getComponentBeansFromWl" resultType="com.qdhualing.qrcodetracker.bean.ComponentBean">
+        SELECT  DISTINCT QRCode_ID , ProductName as name
+        from M_WLIn
+        WHERE QRCode_ID in
+        <foreach collection="list" item="qrCodeId" index="index" open="(" close=")" separator=",">
+            #{qrCodeId}
+        </foreach>
+    </select>
+    <select id="getPdtSortBySortId" resultType="java.lang.String">
+        SELECT Sort_Name
+        FROM Pdt_Sort2
+        WHERE ID = #{0}
+    </select>
+
+    <select id="getBcpInData" resultType="com.qdhualing.qrcodetracker.bean.BCPINParam">
+        SELECT *
+        FROM M_BCPIn
+        WHERE QRCode_ID = #{0}
+    </select>
+
+    <select id="getWlInData" resultType="com.qdhualing.qrcodetracker.bean.WlTrackResult">
+        SELECT M_WLIn.ProductName , M_WLIn.YLPC , M_WLIn.PCZL ,M_WLIn.WL_Code,
+        M_WLIn.LL_Time , M_WLIn.GG , Pdt_Sort2.Sort_Name ,M_WLIn.DWZL,
+        M_WLIn.CHD , M_WLIn.CZY ,M_WLIn.DW
+        FROM M_WLIn LEFT JOIN Pdt_Sort2 on M_WLIn.SortID = Pdt_Sort2.ID
+        WHERE M_WLIn.QRCode_ID = #{0}
+    </select>
     <select id="getSmallCpOutData" resultType="com.qdhualing.qrcodetracker.bean.SmallCpOutGetDataResult">
         SELECT M_CPS.CP_Name , M_CPS.YLPC , M_CPS.SCPC , M_CPS.SC_Time as scDate , M_CPS.GG , Pdt_Sort2.Sort_Name
         FROM M_CPS LEFT JOIN Pdt_Sort2 on M_CPS.SortID = Pdt_Sort2.ID
@@ -81,7 +116,7 @@
         </trim>
     </insert>
 
-    <delete id="deleteCPSByQrId" >
+    <delete id="deleteCPSByQrId">
         DELETE FROM M_CPS
         WHERE QRCode_ID = #{0}
     </delete>
@@ -92,12 +127,12 @@
         WHERE M_CPS2.QRCode_ID = #{0}
     </select>
 
-    <delete id="deleteCPSByCps2QrId" >
+    <delete id="deleteCPSByCps2QrId">
         DELETE FROM M_CPS
         WHERE CPS2_QRCode = #{0}
     </delete>
 
-    <delete id="deleteCPS2ByQrId" >
+    <delete id="deleteCPS2ByQrId">
         DELETE FROM M_CPS2
         WHERE QRCode_ID = #{0}
     </delete>

@@ -420,4 +420,24 @@ public class MainService {
 	public int insertCPOutBySmallParam(SmallCpOutParam param) {
 		return mainDao.insertCPOutBySmallParam(param);
 	}
+
+	public List<WlTrackResult> getWlInData(String qrcodeId) {
+		return mainDao.getWlInData(qrcodeId);
+	}
+
+	public List<BCPINParam> getBcpInData(String qrCodeId) {
+		return mainDao.getBcpInData(qrCodeId);
+	}
+
+	public String getPdtSortBySortId(String sortID) {
+		return mainDao.getPdtSortBySortId(sortID);
+	}
+
+	public List<ComponentBean> getComponentBeansFromBcp(List<String> ylList) {
+		return mainDao.getComponentBeansFromBcp(ylList);
+	}
+
+	public List<ComponentBean> getComponentBeansFromWl(List<String> ylList) {
+		return mainDao.getComponentBeansFromWl(ylList);
+	}
 }

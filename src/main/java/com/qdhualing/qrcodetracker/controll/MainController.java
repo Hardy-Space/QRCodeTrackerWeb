@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -1191,6 +1192,104 @@ public class MainController {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
                 } else {
                     result.setResult(showDataResult);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 物料追溯
+     */
+    @RequestMapping(value = "/wlTrack", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult wlTrack(String json) {
+        WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
+        ActionResult<WlTrackResult> result = new ActionResult<WlTrackResult>();
+        if (param!=null) {
+            try {
+                List<WlTrackResult> dataResults = mainService.getWlInData(param.getQrCodeId());
+                if (dataResults == null||dataResults.size()<1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    result.setResult(dataResults.get(0));
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 半成品追溯
+     */
+    @RequestMapping(value = "/bcpTrack", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult bcpTrack(String json) {
+        WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
+        ActionResult<BcpTrackResult> result = new ActionResult<BcpTrackResult>();
+        if (param!=null) {
+            try {
+                List<BCPINParam> dataResults = mainService.getBcpInData(param.getQrCodeId());
+                if (dataResults == null||dataResults.size()<1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    BcpTrackResult singleData = new BcpTrackResult();
+                    BCPINParam bb = dataResults.get(0);
+                    singleData.setProductName(bb.getProductName());
+                    singleData.setBcpCode(bb.getBcpCode());
+                    singleData.setCheJian(bb.getCheJian());
+                    singleData.setCzy(bb.getCzy());
+                    singleData.setDw(bb.getDw());
+                    singleData.setDwzl(bb.getDwzl());
+                    singleData.setGg(bb.getGg());
+                    singleData.setGx(bb.getGx());
+                    singleData.setJyzt(bb.getJyzt());
+                    singleData.setScpc(bb.getScpc());
+                    singleData.setScTime(bb.getScTime());
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    singleData.setSortName(sortName);
+                    singleData.setYlpc(bb.getYlpc());
+                    singleData.setZjy(bb.getZjy());
+                    List<String> ylList = new ArrayList<String>();
+                    if (!TextUtils.isEmpty(bb.getYl1()))
+                        ylList.add(bb.getYl1());
+                    if (!TextUtils.isEmpty(bb.getYl2()))
+                        ylList.add(bb.getYl2());
+                    if (!TextUtils.isEmpty(bb.getYl3()))
+                        ylList.add(bb.getYl3());
+                    if (!TextUtils.isEmpty(bb.getYl4()))
+                        ylList.add(bb.getYl4());
+                    if (!TextUtils.isEmpty(bb.getYl5()))
+                        ylList.add(bb.getYl5());
+                    if (!TextUtils.isEmpty(bb.getYl6()))
+                        ylList.add(bb.getYl6());
+                    if (!TextUtils.isEmpty(bb.getYl7()))
+                        ylList.add(bb.getYl7());
+                    if (!TextUtils.isEmpty(bb.getYl8()))
+                        ylList.add(bb.getYl8());
+                    if (!TextUtils.isEmpty(bb.getYl9()))
+                        ylList.add(bb.getYl9());
+                    if (!TextUtils.isEmpty(bb.getYl10()))
+                        ylList.add(bb.getYl10());
+                    List<ComponentBean> wlComponentBeans = mainService.getComponentBeansFromWl(ylList);
+                    List<ComponentBean> bcpComponentBeans = mainService.getComponentBeansFromBcp(ylList);
+                    List<ComponentBean> allComponentBeans = new ArrayList<ComponentBean>();
+                    allComponentBeans.clear();
+                    allComponentBeans.addAll(wlComponentBeans);
+                    allComponentBeans.addAll(bcpComponentBeans);
+                    singleData.setComponentBeans(allComponentBeans);
+                    result.setResult(singleData);
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
                 }
             } catch (Exception e) {

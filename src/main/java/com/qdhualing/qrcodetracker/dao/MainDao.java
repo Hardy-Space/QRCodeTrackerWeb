@@ -179,4 +179,14 @@ public interface MainDao {
     int deleteCPSByQrId(String qrCodeId);
     //根据小包装出库参数插入成品入库记录
     int insertCPOutBySmallParam(SmallCpOutParam param);
+    //查询物料追溯信息
+    List<WlTrackResult> getWlInData(String qrcodeId);
+    //查询半成品入库记录表
+    List<BCPINParam> getBcpInData(String qrCodeId);
+    //根据ID获取分类名字
+    String getPdtSortBySortId(String id);
+    //获取组成成分(物料和半成品)
+    List<ComponentBean> getComponentBeansFromBcp(List<String> ylList);
+
+    List<ComponentBean> getComponentBeansFromWl(List<String> ylList);
 }

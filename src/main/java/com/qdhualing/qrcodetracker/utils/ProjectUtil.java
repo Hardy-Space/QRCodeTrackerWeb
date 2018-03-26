@@ -4,11 +4,12 @@ import com.qdhualing.qrcodetracker.bean.BigCpBean;
 
 /**
  * @author 马鹏昊
- * @desc
+ * @desc 本项目内的一些共有方法
  * @date 2018/3/23
  */
 public class ProjectUtil {
 
+    //填充大包装包含的小包装的二维码id
     public static BigCpBean getUpdateCPS2Data(BigCpBean bigCpBean, int index, Long nextQrCodeId) {
         switch (index){
             case 1:
