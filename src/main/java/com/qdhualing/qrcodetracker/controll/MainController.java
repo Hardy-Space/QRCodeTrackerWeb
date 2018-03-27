@@ -1299,5 +1299,116 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 成品小包装追溯
+     */
+    @RequestMapping(value = "/smallCpTrack", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult smallCpTrack(String json) {
+        WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
+        ActionResult<SmallCpTrackResult> result = new ActionResult<SmallCpTrackResult>();
+        if (param!=null) {
+            try {
+                List<CPINParam> dataResults = mainService.getSmallCpInData(param.getQrCodeId());
+                if (dataResults == null||dataResults.size()<1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    SmallCpTrackResult singleData = new SmallCpTrackResult();
+                    CPINParam bb = dataResults.get(0);
+                    singleData.setCpName(bb.getCpName());
+                    singleData.setCpCode(bb.getCpCode());
+                    singleData.setCzy(bb.getCzy());
+                    singleData.setDw(bb.getDw());
+                    singleData.setDwzl(bb.getDwzl());
+                    singleData.setGg(bb.getGg());
+                    singleData.setJyzt(bb.getJyzt());
+                    singleData.setScpc(bb.getScpc());
+                    singleData.setScTime(bb.getScTime());
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    singleData.setSortName(sortName);
+                    singleData.setYlpc(bb.getYlpc());
+                    singleData.setZjy(bb.getZjy());
+                    List<String> ylList = new ArrayList<String>();
+                    if (!TextUtils.isEmpty(bb.getYl1()))
+                        ylList.add(bb.getYl1());
+                    if (!TextUtils.isEmpty(bb.getYl2()))
+                        ylList.add(bb.getYl2());
+                    if (!TextUtils.isEmpty(bb.getYl3()))
+                        ylList.add(bb.getYl3());
+                    if (!TextUtils.isEmpty(bb.getYl4()))
+                        ylList.add(bb.getYl4());
+                    if (!TextUtils.isEmpty(bb.getYl5()))
+                        ylList.add(bb.getYl5());
+                    if (!TextUtils.isEmpty(bb.getYl6()))
+                        ylList.add(bb.getYl6());
+                    if (!TextUtils.isEmpty(bb.getYl7()))
+                        ylList.add(bb.getYl7());
+                    if (!TextUtils.isEmpty(bb.getYl8()))
+                        ylList.add(bb.getYl8());
+                    if (!TextUtils.isEmpty(bb.getYl9()))
+                        ylList.add(bb.getYl9());
+                    if (!TextUtils.isEmpty(bb.getYl10()))
+                        ylList.add(bb.getYl10());
+                    List<ComponentBean> wlComponentBeans = mainService.getComponentBeansFromWl(ylList);
+                    List<ComponentBean> bcpComponentBeans = mainService.getComponentBeansFromBcp(ylList);
+                    List<ComponentBean> allComponentBeans = new ArrayList<ComponentBean>();
+                    allComponentBeans.clear();
+                    allComponentBeans.addAll(wlComponentBeans);
+                    allComponentBeans.addAll(bcpComponentBeans);
+                    singleData.setComponentBeans(allComponentBeans);
+                    result.setResult(singleData);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 成品大包装追溯
+     */
+    @RequestMapping(value = "/bigCpTrack", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult bigCpTrack(String json) {
+        WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
+        ActionResult<BigCpTrackResult> result = new ActionResult<BigCpTrackResult>();
+        if (param!=null) {
+            try {
+                List<BigCpBean> dataResults = mainService.getBigCpIn2(param.getQrCodeId());
+                if (dataResults == null||dataResults.size()<1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                } else {
+                    BigCpTrackResult singleData = new BigCpTrackResult();
+                    BigCpBean bb = dataResults.get(0);
+                    singleData.setCpName(bb.getcPName());
+                    singleData.setCpCode(bb.getcPCode());
+                    singleData.setCzy(bb.getCzy());
+                    singleData.setDw(bb.getDw());
+                    singleData.setDwzl(bb.getDwzl());
+                    singleData.setGg(bb.getGg());
+                    singleData.setJyzt(bb.getJyzt());
+                    singleData.setScpc(bb.getScpc());
+                    singleData.setScTime(bb.getScTime());
+                    singleData.setSmlPk1(bb.getSmlPk1());
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    singleData.setSortName(sortName);
+                    singleData.setYlpc(bb.getYlpc());
+                    singleData.setZjy(bb.getZjy());
+                    result.setResult(singleData);
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
 
 }

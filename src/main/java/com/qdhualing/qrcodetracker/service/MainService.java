@@ -440,4 +440,12 @@ public class MainService {
 	public List<ComponentBean> getComponentBeansFromWl(List<String> ylList) {
 		return mainDao.getComponentBeansFromWl(ylList);
 	}
+
+	public List<CPINParam> getSmallCpInData(String qrCodeId) {
+		return mainDao.getSmallCpInData(qrCodeId);
+	}
+
+	public List<BigCpBean> getBigCpIn2(String qrCodeId) {
+		return mainDao.getBigCpIn2(qrCodeId);
+	}
 }

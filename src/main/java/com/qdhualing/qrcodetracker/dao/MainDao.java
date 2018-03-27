@@ -185,8 +185,12 @@ public interface MainDao {
     List<BCPINParam> getBcpInData(String qrCodeId);
     //根据ID获取分类名字
     String getPdtSortBySortId(String id);
-    //获取组成成分(物料和半成品)
+    //获取组成成分(半成品)
     List<ComponentBean> getComponentBeansFromBcp(List<String> ylList);
-
+    //获取组成成分(物料)
     List<ComponentBean> getComponentBeansFromWl(List<String> ylList);
+    //获取小包装入库记录
+    List<CPINParam> getSmallCpInData(String qrCodeId);
+    //获取大包装记录信息
+    List<BigCpBean> getBigCpIn2(String qrCodeId);
 }

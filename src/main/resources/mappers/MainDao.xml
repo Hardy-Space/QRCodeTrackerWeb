@@ -2,6 +2,17 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getBigCpIn2" resultType="com.qdhualing.qrcodetracker.bean.BigCpBean">
+        SELECT *
+        FROM M_CPIn2
+        WHERE QRCode_ID = #{0}
+    </select>
+    <select id="getSmallCpInData" resultType="com.qdhualing.qrcodetracker.bean.CPINParam">
+        SELECT *
+        FROM M_CPIn
+        WHERE QRCode_ID = #{0}
+    </select>
+
     <select id="getComponentBeansFromBcp" resultType="com.qdhualing.qrcodetracker.bean.ComponentBean">
         SELECT DISTINCT QRCode_ID , ProductName as name
         from M_BCPIn
@@ -11,7 +22,7 @@
         </foreach>
     </select>
     <select id="getComponentBeansFromWl" resultType="com.qdhualing.qrcodetracker.bean.ComponentBean">
-        SELECT  DISTINCT QRCode_ID , ProductName as name
+        SELECT DISTINCT QRCode_ID , ProductName as name
         from M_WLIn
         WHERE QRCode_ID in
         <foreach collection="list" item="qrCodeId" index="index" open="(" close=")" separator=",">
@@ -366,6 +377,9 @@ SmlPk45		= #{smlPk45},
             <if test="cPS2QRCode!=null">
                 CPS2_QRCode,
             </if>
+            <if test="gg!=null">
+                GG,
+            </if>
             <if test="yl1!=null">
                 Yl_1,
             </if>
@@ -438,6 +452,9 @@ SmlPk45		= #{smlPk45},
             </if>
             <if test="cPS2QRCode!=null">
                 #{cPS2QRCode},
+            </if>
+            <if test="gg!=null">
+                #{gg},
             </if>
             <if test="yl1!=null">
                 #{yl1},

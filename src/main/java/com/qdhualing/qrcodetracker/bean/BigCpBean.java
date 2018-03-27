@@ -22,8 +22,8 @@ public class BigCpBean {
     private String gYName;
     private String czy;
     private String zjy;
-    private String zyzt;
-    private String zybz;
+    private String jyzt;
+    private String jybz;
     private String ld;
     private String company;
     private float yuJing;
@@ -195,20 +195,20 @@ public class BigCpBean {
         this.zjy = zjy;
     }
 
-    public String getZyzt() {
-        return zyzt;
+    public String getJyzt() {
+        return jyzt;
     }
 
-    public void setZyzt(String zyzt) {
-        this.zyzt = zyzt;
+    public void setJyzt(String jyzt) {
+        this.jyzt = jyzt;
     }
 
-    public String getZybz() {
-        return zybz;
+    public String getJybz() {
+        return jybz;
     }
 
-    public void setZybz(String zybz) {
-        this.zybz = zybz;
+    public void setJybz(String jybz) {
+        this.jybz = jybz;
     }
 
     public String getLd() {
