@@ -1,6 +1,9 @@
 package com.qdhualing.qrcodetracker.controll;
 
+import cn.jiguang.common.resp.APIConnectionException;
+import cn.jiguang.common.resp.APIRequestException;
 import com.qdhualing.qrcodetracker.bean.*;
+import com.qdhualing.qrcodetracker.model.NotificationType;
 import com.qdhualing.qrcodetracker.service.MainService;
 import com.qdhualing.qrcodetracker.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1056,8 +1059,8 @@ public class MainController {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "录入CPS失败");
                 }
                 //如果是需要关联大包装的小包装则需要以下操作
-                if (!TextUtils.isEmpty(inParam.getcPS2QRCode())){
-                    bigCpBean  = ProjectUtil.getUpdateCPS2Data(bigCpBean,nowIndex+1,nextQrCodeId);
+                if (!TextUtils.isEmpty(inParam.getcPS2QRCode())) {
+                    bigCpBean = ProjectUtil.getUpdateCPS2Data(bigCpBean, nowIndex + 1, nextQrCodeId);
                     b = mainService.updateCPS2(bigCpBean);
                     b = mainService.updateCPIn2(bigCpBean);
                 }
@@ -1095,7 +1098,7 @@ public class MainController {
             param.setYlpc(bigCpBean.getYlpc());
             param.setSortId(bigCpBean.getSortID());
             int b = mainService.insertCPOut(param);
-            if (b<=0) {
+            if (b <= 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "出库记录生成失败");
             }
             b = mainService.deleteCPS2ByQrId(param.getQrCodeId());
@@ -1139,6 +1142,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1161,7 +1165,7 @@ public class MainController {
             param.setYlpc(bigCpBean.getYlpc());
             param.setSortId(bigCpBean.getSortID());
             int b = mainService.insertCPOutBySmallParam(param);
-            if (b<=0) {
+            if (b <= 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "出库记录生成失败");
             }
             b = mainService.deleteCPSByQrId(param.getQrCodeId());
@@ -1212,10 +1216,10 @@ public class MainController {
     public ActionResult wlTrack(String json) {
         WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
         ActionResult<WlTrackResult> result = new ActionResult<WlTrackResult>();
-        if (param!=null) {
+        if (param != null) {
             try {
                 List<WlTrackResult> dataResults = mainService.getWlInData(param.getQrCodeId());
-                if (dataResults == null||dataResults.size()<1) {
+                if (dataResults == null || dataResults.size() < 1) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
                 } else {
                     result.setResult(dataResults.get(0));
@@ -1228,6 +1232,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1238,10 +1243,10 @@ public class MainController {
     public ActionResult bcpTrack(String json) {
         WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
         ActionResult<BcpTrackResult> result = new ActionResult<BcpTrackResult>();
-        if (param!=null) {
+        if (param != null) {
             try {
                 List<BCPINParam> dataResults = mainService.getBcpInData(param.getQrCodeId());
-                if (dataResults == null||dataResults.size()<1) {
+                if (dataResults == null || dataResults.size() < 1) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
                 } else {
                     BcpTrackResult singleData = new BcpTrackResult();
@@ -1257,7 +1262,7 @@ public class MainController {
                     singleData.setJyzt(bb.getJyzt());
                     singleData.setScpc(bb.getScpc());
                     singleData.setScTime(bb.getScTime());
-                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID() + "");
                     singleData.setSortName(sortName);
                     singleData.setYlpc(bb.getYlpc());
                     singleData.setZjy(bb.getZjy());
@@ -1299,6 +1304,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1309,10 +1315,10 @@ public class MainController {
     public ActionResult smallCpTrack(String json) {
         WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
         ActionResult<SmallCpTrackResult> result = new ActionResult<SmallCpTrackResult>();
-        if (param!=null) {
+        if (param != null) {
             try {
                 List<CPINParam> dataResults = mainService.getSmallCpInData(param.getQrCodeId());
-                if (dataResults == null||dataResults.size()<1) {
+                if (dataResults == null || dataResults.size() < 1) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
                 } else {
                     SmallCpTrackResult singleData = new SmallCpTrackResult();
@@ -1326,7 +1332,7 @@ public class MainController {
                     singleData.setJyzt(bb.getJyzt());
                     singleData.setScpc(bb.getScpc());
                     singleData.setScTime(bb.getScTime());
-                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID() + "");
                     singleData.setSortName(sortName);
                     singleData.setYlpc(bb.getYlpc());
                     singleData.setZjy(bb.getZjy());
@@ -1368,6 +1374,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1378,10 +1385,10 @@ public class MainController {
     public ActionResult bigCpTrack(String json) {
         WlTrackParam param = ParamsUtils.handleParams(json, WlTrackParam.class);
         ActionResult<BigCpTrackResult> result = new ActionResult<BigCpTrackResult>();
-        if (param!=null) {
+        if (param != null) {
             try {
                 List<BigCpBean> dataResults = mainService.getBigCpIn2(param.getQrCodeId());
-                if (dataResults == null||dataResults.size()<1) {
+                if (dataResults == null || dataResults.size() < 1) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
                 } else {
                     BigCpTrackResult singleData = new BigCpTrackResult();
@@ -1396,7 +1403,7 @@ public class MainController {
                     singleData.setScpc(bb.getScpc());
                     singleData.setScTime(bb.getScTime());
                     singleData.setSmlPk1(bb.getSmlPk1());
-                    String sortName = mainService.getPdtSortBySortId(bb.getSortID()+"");
+                    String sortName = mainService.getPdtSortBySortId(bb.getSortID() + "");
                     singleData.setSortName(sortName);
                     singleData.setYlpc(bb.getYlpc());
                     singleData.setZjy(bb.getZjy());
@@ -1409,6 +1416,70 @@ public class MainController {
             }
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 发送给相关人员审核通知
+     */
+    @RequestMapping(value = "/sendNotification", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult sendNotification(String json) {
+        NotificationParam param = ParamsUtils.handleParams(json, NotificationParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        try {
+            //要发送的人
+            String desPerson = null;
+            //推送消息
+            String alertMsg = null;
+            switch (param.getStyle()) {
+                case NotificationType.WL_RKD:
+                    desPerson = mainService.getShrFromWlRkd(param.getDh());
+                    alertMsg = "您有一条物料入库单需要审核";
+                    break;
+                case NotificationType.WL_CKD:
+                    desPerson = mainService.getFhrFromWlCkd(param.getDh());
+                    alertMsg = "您有一条物料出库单需要审核";
+                    break;
+                case NotificationType.WL_TKD:
+                    desPerson = mainService.getShrFromWlTkd(param.getDh());
+                    alertMsg = "您有一条物料退库单需要审核";
+                    break;
+                case NotificationType.BCP_RKD:
+                    desPerson = mainService.getShrFromBcpRkd(param.getDh());
+                    alertMsg = "您有一条半成品入库单需要审核";
+                    break;
+                case NotificationType.BCP_TKD:
+                    desPerson = mainService.getShrFromBcpTkd(param.getDh());
+                    alertMsg = "您有一条半成品退库单需要审核";
+                    break;
+                case NotificationType.CP_RKD:
+                    desPerson = mainService.getShrFromBcpRkd(param.getDh());
+                    alertMsg = "您有一条成品入库单需要审核";
+                    break;
+                case NotificationType.CP_CKD:
+                    desPerson = mainService.getFhrFromBcpCkd(param.getDh());
+                    alertMsg = "您有一条成品出库单需要审核";
+                    break;
+            }
+            try {
+                JPushUtils.sendNotification(alertMsg,desPerson);
+            } catch (APIConnectionException e) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "推送失败");
+            } catch (APIRequestException e) {
+                // Should review the error, and fix the request
+//                LOG.error("Should review the error, and fix the request", e);
+//                LOG.info("HTTP Status: " + e.getStatus());
+//                LOG.info("Error Code: " + e.getErrorCode());
+//                LOG.info("Error Message: " + e.getErrorMessage());
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "推送失败");
+            }
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "已通知仓库管理员审核");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+        }
     }
 
 }

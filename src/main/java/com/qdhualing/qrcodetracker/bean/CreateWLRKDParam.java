@@ -21,6 +21,25 @@ public class CreateWLRKDParam {
     //发货人
     private String Fhr;
 
+    private String ShFzr;
+    private String JhFzr;
+
+    public String getShFzr() {
+        return ShFzr;
+    }
+
+    public void setShFzr(String shFzr) {
+        ShFzr = shFzr;
+    }
+
+    public String getJhFzr() {
+        return JhFzr;
+    }
+
+    public void setJhFzr(String jhFzr) {
+        JhFzr = jhFzr;
+    }
+
     public String getFhDw() {
         return FhDw;
     }

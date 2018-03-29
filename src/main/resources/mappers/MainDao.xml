@@ -2,6 +2,42 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getFhrFromBcpCkd" resultType="java.lang.String">
+        SELECT FhR
+        FROM Ckd_Bcp
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getShrFromBcpTkd" resultType="java.lang.String">
+        SELECT ShR
+        FROM Tkd_Bcp
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getShrFromBcpRkd" resultType="java.lang.String">
+        SELECT ShR
+        FROM Rkd_Bcp
+        WHERE InDh = #{0}
+    </select>
+
+    <select id="getShrFromWlTkd" resultType="java.lang.String">
+        SELECT ShR
+        FROM Tkd_Wl
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getFhrFromWlCkd" resultType="java.lang.String">
+        SELECT FhR
+        FROM Ckd_Wl
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getShrFromWlRkd" resultType="java.lang.String">
+        SELECT ShR
+        FROM Rkd_Wl
+        WHERE InDh = #{0}
+    </select>
+
     <select id="getBigCpIn2" resultType="com.qdhualing.qrcodetracker.bean.BigCpBean">
         SELECT *
         FROM M_CPIn2
@@ -2345,7 +2381,13 @@ SmlPk45		= #{smlPk45},
                 InDh,
             </if>
             <if test="Shr!=null">
-                Shr
+                Shr,
+            </if>
+            <if test="ShFzr!=null">
+                ShFzr,
+            </if>
+            <if test="JhFzr!=null">
+                JhFzr,
             </if>
         </trim>
         values
@@ -2357,7 +2399,13 @@ SmlPk45		= #{smlPk45},
                 #{InDh},
             </if>
             <if test="Shr!=null">
-                #{Shr}
+                #{Shr},
+            </if>
+            <if test="ShFzr!=null">
+                #{ShFzr},
+            </if>
+            <if test="JhFzr!=null">
+                #{JhFzr},
             </if>
         </trim>
     </insert>

@@ -448,4 +448,29 @@ public class MainService {
 	public List<BigCpBean> getBigCpIn2(String qrCodeId) {
 		return mainDao.getBigCpIn2(qrCodeId);
 	}
+
+	public String getShrFromWlRkd(String dh) {
+		return mainDao.getShrFromWlRkd(dh);
+	}
+
+	public String getFhrFromWlCkd(String dh) {
+		return mainDao.getFhrFromWlCkd(dh);
+	}
+
+
+	public String getShrFromWlTkd(String dh) {
+		return mainDao.getShrFromWlTkd(dh);
+	}
+
+	public String getShrFromBcpRkd(String dh) {
+		return mainDao.getShrFromBcpRkd(dh);
+	}
+
+	public String getShrFromBcpTkd(String dh) {
+		return mainDao.getShrFromBcpTkd(dh);
+	}
+
+	public String getFhrFromBcpCkd(String dh) {
+		return mainDao.getFhrFromBcpCkd(dh);
+	}
 }

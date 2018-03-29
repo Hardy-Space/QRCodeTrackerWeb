@@ -193,4 +193,16 @@ public interface MainDao {
     List<CPINParam> getSmallCpInData(String qrCodeId);
     //获取大包装记录信息
     List<BigCpBean> getBigCpIn2(String qrCodeId);
+
+    String getShrFromWlRkd(String dh);
+
+    String getFhrFromWlCkd(String dh);
+
+    String getShrFromWlTkd(String dh);
+
+    String getShrFromBcpRkd(String dh);
+
+    String getShrFromBcpTkd(String dh);
+
+    String getFhrFromBcpCkd(String dh);
 }
