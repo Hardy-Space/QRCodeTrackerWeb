@@ -2,6 +2,126 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getBcpTkShowBeanListByBackDh" resultType="com.qdhualing.qrcodetracker.bean.BcpTkShowBean">
+        SELECT *
+        FROM M_BCPBk
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getBcpTkdBean" resultType="com.qdhualing.qrcodetracker.bean.BcpTkdBean">
+        SELECT *
+        FROM Tkd_Bcp
+        WHERE BackDh = #{0}
+    </select>
+    <select id="getCpOutShowBeanListByOutDh" resultType="com.qdhualing.qrcodetracker.bean.CpOutShowBean">
+        SELECT *
+        FROM M_CPOut
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getBcpCkdBean" resultType="com.qdhualing.qrcodetracker.bean.BcpCkdBean">
+        SELECT *
+        FROM Ckd_Bcp
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getBigCpInShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        SELECT QRCode_ID as qRCodeID, CP_Code as wLCode, CP_Name as productName, GG as gG, SortID as sortID,
+        YLPC as yLPC, SC_Time as time, Indh as inDh, DW as dW, DWZL as dWZL
+        FROM M_CPIn2
+        WHERE Indh = #{0}
+    </select>
+    <select id="getCpInShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        SELECT  QRCode_ID as qRCodeID, CP_Code as wLCode, CP_Name as productName, GG as gG, SortID as sortID,
+        YLPC as yLPC, SC_Time as time, InDh as inDh, DW as dW, DWZL as dWZL,SHL as shl
+        FROM M_CPIn
+        WHERE InDh = #{0}
+    </select>
+    <select id="getBcpInShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        SELECT QRCode_ID as qRCodeID, BCP_Code as wLCode, ProductName as productName, GG as gG, SortID as sortID,
+        YLPC as yLPC, SC_Time as time, InDh as inDh, DW as dW, DWZL as dWZL,SHL as shl
+        FROM M_BCPIn
+        WHERE InDh = #{0}
+    </select>
+
+    <select id="getBcpRkdBean" resultType="com.qdhualing.qrcodetracker.bean.BcpRkdBean">
+        SELECT *
+        FROM Rkd_Bcp
+        WHERE InDh = #{0}
+    </select>
+
+    <select id="getWLTkShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLTkShowBean">
+        SELECT *
+        FROM M_WLBk
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getWlTkdBean" resultType="com.qdhualing.qrcodetracker.bean.WlTkdBean">
+        SELECT *
+        FROM Tkd_Wl
+        WHERE BackDh = #{0}
+    </select>
+
+    <select id="getWLOutShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLOutShowBean">
+        SELECT *
+        FROM M_WLOUT
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getWlCkdBean" resultType="com.qdhualing.qrcodetracker.bean.WlCkdBean">
+        SELECT *
+        FROM Ckd_Wl
+        WHERE OutDh = #{0}
+    </select>
+
+    <select id="getWLINShowBeanListByInDh" resultType="com.qdhualing.qrcodetracker.bean.WLINShowBean">
+        SELECT *
+        FROM M_WLIn
+        WHERE InDh = #{0}
+    </select>
+
+    <select id="getWlRkdBean" resultType="com.qdhualing.qrcodetracker.bean.WlRkdBean">
+        SELECT *
+        FROM Rkd_Wl
+        WHERE InDh = #{0}
+    </select>
+
+    <select id="getBcpTkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.BcpTkdBean">
+        SELECT *
+        FROM Tkd_Bcp
+        WHERE ShR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getBcpCkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.BcpCkdBean">
+        SELECT *
+        FROM Ckd_Bcp
+        WHERE FhR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getBcpRkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.BcpRkdBean">
+        SELECT *
+        FROM Rkd_Bcp
+        WHERE ShR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getWlTkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.WlTkdBean">
+        SELECT *
+        FROM Tkd_Wl
+        WHERE ShR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getWlCkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.WlCkdBean">
+        SELECT *
+        FROM Ckd_Wl
+        WHERE FhR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getWlRkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.WlRkdBean">
+        SELECT *
+        FROM Rkd_Wl
+        WHERE ShR = #{0} AND Check_State = 0
+    </select>
+
     <select id="getFhrFromBcpCkd" resultType="java.lang.String">
         SELECT FhR
         FROM Ckd_Bcp
@@ -2389,6 +2509,12 @@ SmlPk45		= #{smlPk45},
             <if test="JhFzr!=null">
                 JhFzr,
             </if>
+            <if test="Fhr!=null">
+                JhR,
+            </if>
+            <if test="FhDw!=null">
+                JhDw,
+            </if>
         </trim>
         values
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -2406,6 +2532,12 @@ SmlPk45		= #{smlPk45},
             </if>
             <if test="JhFzr!=null">
                 #{JhFzr},
+            </if>
+            <if test="Fhr!=null">
+                #{Fhr},
+            </if>
+            <if test="FhDw!=null">
+                #{FhDw},
             </if>
         </trim>
     </insert>

@@ -473,4 +473,92 @@ public class MainService {
 	public String getFhrFromBcpCkd(String dh) {
 		return mainDao.getFhrFromBcpCkd(dh);
 	}
+
+	public List<WlRkdBean> getWlRkNonCheckData(String realName) {
+		return mainDao.getWlRkNonCheckData(realName);
+	}
+
+	public List<WlCkdBean> getWlCkNonCheckData(String realName) {
+		return mainDao.getWlCkNonCheckData(realName);
+	}
+
+	public List<WlTkdBean> getWlTkNonCheckData(String realName) {
+		return mainDao.getWlTkNonCheckData(realName);
+	}
+
+	public List<BcpRkdBean> getBcpRkNonCheckData(String realName) {
+		return mainDao.getBcpRkNonCheckData(realName);
+	}
+
+	public List<BcpCkdBean> getBcpCkNonCheckData(String realName) {
+		return mainDao.getBcpCkNonCheckData(realName);
+	}
+
+	public List<BcpTkdBean> getBcpTkNonCheckData(String realName) {
+		return mainDao.getBcpTkNonCheckData(realName);
+	}
+
+	public WlRkdBean getWlRkdBean(String dh) {
+		return mainDao.getWlRkdBean(dh);
+	}
+
+	public List<WLINShowBean> getWLINShowBeanListByInDh(String dh) {
+		List<WLINShowBean> list=mainDao.getWLINShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public WlCkdBean getWlCkdBean(String dh) {
+		return mainDao.getWlCkdBean(dh);
+	}
+
+	public List<WLOutShowBean> getWLOutShowBeanListByInDh(String dh) {
+		List<WLOutShowBean> list=mainDao.getWLOutShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public WlTkdBean getWlTkdBean(String dh) {
+		return mainDao.getWlTkdBean(dh);
+	}
+
+	public List<WLTkShowBean> getWLTkShowBeanListByInDh(String dh) {
+		List<WLTkShowBean> list=mainDao.getWLTkShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public BcpRkdBean getBcpRkdBean(String dh) {
+		return mainDao.getBcpRkdBean(dh);
+	}
+
+	public List<BcpInShowBean> getBcpInShowBeanListByInDh(String dh) {
+		List<BcpInShowBean> list=mainDao.getBcpInShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public List<BcpInShowBean> getCpInShowBeanListByInDh(String dh) {
+		List<BcpInShowBean> list=mainDao.getCpInShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public List<BcpInShowBean> getBigCpInShowBeanListByInDh(String dh) {
+		List<BcpInShowBean> list=mainDao.getBigCpInShowBeanListByInDh(dh);
+		return list;
+	}
+
+	public BcpCkdBean getBcpCkdBean(String dh) {
+		return mainDao.getBcpCkdBean(dh);
+	}
+
+	public List<CpOutShowBean> getCpOutShowBeanListByOutDh(String dh) {
+		List<CpOutShowBean> list=mainDao.getCpOutShowBeanListByOutDh(dh);
+		return list;
+	}
+
+	public BcpTkdBean getBcpTkdBean(String dh) {
+		return mainDao.getBcpTkdBean(dh);
+	}
+
+	public List<BcpTkShowBean> getBcpTkShowBeanListByBackDh(String dh) {
+		List<BcpTkShowBean> list=mainDao.getBcpTkShowBeanListByBackDh(dh);
+		return list;
+	}
 }

@@ -205,4 +205,44 @@ public interface MainDao {
     String getShrFromBcpTkd(String dh);
 
     String getFhrFromBcpCkd(String dh);
+
+    List<WlRkdBean> getWlRkNonCheckData(String realName);
+
+    List<WlCkdBean> getWlCkNonCheckData(String realName);
+
+    List<WlTkdBean> getWlTkNonCheckData(String realName);
+
+    List<BcpRkdBean> getBcpRkNonCheckData(String realName);
+
+    List<BcpCkdBean> getBcpCkNonCheckData(String realName);
+
+    List<BcpTkdBean> getBcpTkNonCheckData(String realName);
+
+    WlRkdBean getWlRkdBean(String dh);
+
+    List<WLINShowBean> getWLINShowBeanListByInDh(String dh);
+
+    WlCkdBean getWlCkdBean(String dh);
+
+    List<WLOutShowBean> getWLOutShowBeanListByInDh(String dh);
+
+    WlTkdBean getWlTkdBean(String dh);
+
+    List<WLTkShowBean> getWLTkShowBeanListByInDh(String dh);
+
+    BcpRkdBean getBcpRkdBean(String dh);
+
+    List<BcpInShowBean> getBcpInShowBeanListByInDh(String dh);
+
+    List<BcpInShowBean> getCpInShowBeanListByInDh(String dh);
+
+    List<BcpInShowBean> getBigCpInShowBeanListByInDh(String dh);
+
+    BcpCkdBean getBcpCkdBean(String dh);
+
+    List<CpOutShowBean> getCpOutShowBeanListByOutDh(String dh);
+
+    BcpTkdBean getBcpTkdBean(String dh);
+
+    List<BcpTkShowBean> getBcpTkShowBeanListByBackDh(String dh);
 }

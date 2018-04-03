@@ -5,6 +5,7 @@ import cn.jiguang.common.resp.APIRequestException;
 import com.qdhualing.qrcodetracker.bean.*;
 import com.qdhualing.qrcodetracker.model.NotificationType;
 import com.qdhualing.qrcodetracker.service.MainService;
+import com.qdhualing.qrcodetracker.service.UserService;
 import com.qdhualing.qrcodetracker.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class MainController {
 
     @Autowired
     private MainService mainService;
+
+    @Autowired
+    private UserService userService;
 
     //创建入库单表头信息
     @RequestMapping(value = "/createWL_RKD", method = RequestMethod.POST)
@@ -1464,7 +1468,7 @@ public class MainController {
                     break;
             }
             try {
-                JPushUtils.sendNotification(alertMsg,desPerson);
+                JPushUtils.sendNotification(alertMsg, desPerson);
             } catch (APIConnectionException e) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "推送失败");
             } catch (APIRequestException e) {
@@ -1480,6 +1484,304 @@ public class MainController {
             e.printStackTrace();
             return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
         }
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取待审核库单数据
+     */
+    @RequestMapping(value = "/getNonCheckData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getNonCheckData(String json) {
+        MainParams param = ParamsUtils.handleParams(json, MainParams.class);
+        ActionResult<NonCheckResult> result = new ActionResult<NonCheckResult>();
+        if (param != null) {
+            try {
+                NonCheckResult dataResult = new NonCheckResult();
+                List<NonCheckBean> allBeans = new ArrayList<NonCheckBean>();
+                List<WlRkdBean> wlRkNonCheckData = mainService.getWlRkNonCheckData(param.getRealName());
+                for (int i = 0; i < wlRkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlRkdBean single = wlRkNonCheckData.get(i);
+                    bean.setDh(single.getInDh());
+                    bean.setName("物料入库单");
+                    bean.setTime(single.getShrq());
+                    allBeans.add(bean);
+                }
+                List<WlCkdBean> wlCkNonCheckData = mainService.getWlCkNonCheckData(param.getRealName());
+                for (int i = 0; i < wlCkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlCkdBean single = wlCkNonCheckData.get(i);
+                    bean.setDh(single.getOutDh());
+                    bean.setName("物料出库单");
+                    bean.setTime(single.getLhRq());
+                    allBeans.add(bean);
+                }
+                List<WlTkdBean> wlTkNonCheckData = mainService.getWlTkNonCheckData(param.getRealName());
+                for (int i = 0; i < wlTkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlTkdBean single = wlTkNonCheckData.get(i);
+                    bean.setDh(single.getBackDh());
+                    bean.setName("物料退库单");
+                    bean.setTime(single.getThRq());
+                    allBeans.add(bean);
+                }
+                List<BcpRkdBean> bcpRkNonCheckData = mainService.getBcpRkNonCheckData(param.getRealName());
+                for (int i = 0; i < bcpRkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpRkdBean single = bcpRkNonCheckData.get(i);
+                    bean.setDh(single.getInDh());
+                    bean.setName("半成品/成品入库单");
+                    bean.setTime(single.getShrq());
+                    allBeans.add(bean);
+                }
+                List<BcpCkdBean> bcpCkNonCheckData = mainService.getBcpCkNonCheckData(param.getRealName());
+                for (int i = 0; i < bcpCkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpCkdBean single = bcpCkNonCheckData.get(i);
+                    bean.setDh(single.getOutDh());
+                    bean.setName("成品出库单");
+                    bean.setTime(single.getLhRq());
+                    allBeans.add(bean);
+                }
+                List<BcpTkdBean> bcpTkNonCheckData = mainService.getBcpTkNonCheckData(param.getRealName());
+                for (int i = 0; i < bcpTkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpTkdBean single = bcpTkNonCheckData.get(i);
+                    bean.setDh(single.getBackDh());
+                    bean.setName("半成品退库单");
+                    bean.setTime(single.getThRq());
+                    allBeans.add(bean);
+                }
+                for (int i = 0; i < allBeans.size() - 1; i++) {
+                    for (int j = 0; j < allBeans.size() - 1 - i; j++)// j开始等于0，
+                    {
+                        String beginTime = allBeans.get(j).getTime();
+                        String endTime = allBeans.get(j + 1).getTime();
+                        if (beginTime.compareTo(endTime) < 0) {
+                            NonCheckBean smallBean = allBeans.get(j);
+                            NonCheckBean bigBean = allBeans.get(j + 1);
+                            allBeans.set(j, bigBean);
+                            allBeans.set(j + 1, smallBean);
+                        }
+                    }
+                }
+                dataResult.setBeans(allBeans);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取物料入库审核信息（包括入库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getWlInVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getWlInVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<WlInVerifyResult> result = new ActionResult<WlInVerifyResult>();
+        if (param != null) {
+            try {
+                WlInVerifyResult dataResult = new WlInVerifyResult();
+                WlRkdBean rkdBean = mainService.getWlRkdBean(param.getDh());
+                dataResult.setFhDw(rkdBean.getJhDw());
+                dataResult.setFhR(rkdBean.getJhR());
+                dataResult.setInDh(rkdBean.getInDh());
+                dataResult.setJhFzr(rkdBean.getJhFzr());
+                dataResult.setRemark(rkdBean.getRemark());
+                dataResult.setShFzr(rkdBean.getShFzr());
+                dataResult.setShRq(rkdBean.getShrq());
+                List<WLINShowBean> wlinDataList = mainService.getWLINShowBeanListByInDh(param.getDh());
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取物料出库审核信息（包括出库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getWlOutVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getWlOutVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<WlOutVerifyResult> result = new ActionResult<WlOutVerifyResult>();
+        if (param != null) {
+            try {
+                WlOutVerifyResult dataResult = new WlOutVerifyResult();
+                WlCkdBean ckdBean = mainService.getWlCkdBean(param.getDh());
+                dataResult.setLhDw(ckdBean.getLhDw());
+                dataResult.setFhFzr(ckdBean.getFhFzr());
+                dataResult.setLhR(ckdBean.getLhR());
+                dataResult.setLhFzr(ckdBean.getLhFzr());
+                dataResult.setLhRq(ckdBean.getLhRq());
+                dataResult.setOutDh(ckdBean.getOutDh());
+                dataResult.setRemark(ckdBean.getRemark());
+                List<WLOutShowBean> wlinDataList = mainService.getWLOutShowBeanListByInDh(param.getDh());
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取物料退库审核信息（包括退库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getWlTkVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getWlTkVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<WlTkVerifyResult> result = new ActionResult<WlTkVerifyResult>();
+        if (param != null) {
+            try {
+                WlTkVerifyResult dataResult = new WlTkVerifyResult();
+                WlTkdBean tkdBean = mainService.getWlTkdBean(param.getDh());
+                dataResult.setThDw(tkdBean.getThDw());
+                dataResult.setThFzr(tkdBean.getThFzr());
+                dataResult.setThR(tkdBean.getThR());
+                dataResult.setShFzr(tkdBean.getShFzr());
+                dataResult.setThRq(tkdBean.getThRq());
+                dataResult.setBackDh(tkdBean.getBackDh());
+                dataResult.setRemark(tkdBean.getRemark());
+                List<WLTkShowBean> wlinDataList = mainService.getWLTkShowBeanListByInDh(param.getDh());
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取半成品入库审核信息（包括入库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getBcpInVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getBcpInVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<BcpInVerifyResult> result = new ActionResult<BcpInVerifyResult>();
+        if (param != null) {
+            try {
+                BcpInVerifyResult dataResult = new BcpInVerifyResult();
+                BcpRkdBean bean = mainService.getBcpRkdBean(param.getDh());
+                dataResult.setJhDw(bean.getJhDw());
+                dataResult.setShFzr(bean.getShFzr());
+                dataResult.setJhR(bean.getJhR());
+                dataResult.setJhFzr(bean.getJhFzr());
+                dataResult.setShRq(bean.getShrq());
+                dataResult.setInDh(bean.getInDh());
+                dataResult.setRemark(bean.getRemark());
+                List<BcpInShowBean> wlinDataList = mainService.getBcpInShowBeanListByInDh(param.getDh());
+                if (wlinDataList == null || wlinDataList.size() < 0) {
+                    wlinDataList = mainService.getCpInShowBeanListByInDh(param.getDh());
+                }
+                if (wlinDataList == null || wlinDataList.size() < 0) {
+                    wlinDataList = mainService.getBigCpInShowBeanListByInDh(param.getDh());
+                    //大包装入库记录是没有数量的，所以会是null，但App接收的时候是用float接收的，会出错，所以设置成-1
+                    for (int i = 0; i < wlinDataList.size(); i++) {
+                        wlinDataList.get(i).setShl(-1);
+                    }
+                }
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取半成品出库审核信息（包括出库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getCpOutVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getCpOutVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<CpOutVerifyResult> result = new ActionResult<CpOutVerifyResult>();
+        if (param != null) {
+            try {
+                CpOutVerifyResult dataResult = new CpOutVerifyResult();
+                BcpCkdBean bean = mainService.getBcpCkdBean(param.getDh());
+                dataResult.setLhDw(bean.getLhDw());
+                dataResult.setFhFzr(bean.getFhFzr());
+                dataResult.setLhFzr(bean.getLhFzr());
+                dataResult.setLhR(bean.getLhR());
+                dataResult.setLhRq(bean.getLhRq());
+                dataResult.setOutDh(bean.getOutDh());
+                dataResult.setRemark(bean.getRemark());
+                List<CpOutShowBean> wlinDataList = mainService.getCpOutShowBeanListByOutDh(param.getDh());
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取半成品退库审核信息（包括退库单详情和关联的每一条记录的信息）
+     */
+    @RequestMapping(value = "/getBcpTkVerifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getBcpTkVerifyData(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<BcpTkVerifyResult> result = new ActionResult<BcpTkVerifyResult>();
+        if (param != null) {
+            try {
+                BcpTkVerifyResult dataResult = new BcpTkVerifyResult();
+                BcpTkdBean bean = mainService.getBcpTkdBean(param.getDh());
+                dataResult.setThDw(bean.getThDw());
+                dataResult.setBackDh(bean.getBackDh());
+                dataResult.setRemark(bean.getRemark());
+                dataResult.setShFzr(bean.getShFzr());
+                dataResult.setThFzr(bean.getThFzr());
+                dataResult.setThR(bean.getThR());
+                dataResult.setThRq(bean.getThRq());
+                List<BcpTkShowBean> wlinDataList = mainService.getBcpTkShowBeanListByBackDh(param.getDh());
+                dataResult.setBeans(wlinDataList);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
     }
 
 }
