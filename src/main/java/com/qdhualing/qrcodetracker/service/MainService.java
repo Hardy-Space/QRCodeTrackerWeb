@@ -561,4 +561,80 @@ public class MainService {
 		List<BcpTkShowBean> list=mainDao.getBcpTkShowBeanListByBackDh(dh);
 		return list;
 	}
+
+	public int agreeWlIn(String dh) {
+    	return mainDao.agreeWlIn(dh);
+	}
+
+	public int refuseWlIn(String dh) {
+		return mainDao.refuseWlIn(dh);
+	}
+
+	public int agreeWlOut(String dh) {
+		return mainDao.agreeWlOut(dh);
+	}
+
+	public int refuseWlOut(String dh) {
+		return mainDao.refuseWlOut(dh);
+	}
+
+	public int agreeWlTk(String dh) {
+		return mainDao.agreeWlTk(dh);
+	}
+
+	public int refuseWlTk(String dh) {
+		return mainDao.refuseWlTk(dh);
+	}
+
+	public int agreeBcpIn(String dh) {
+		return mainDao.agreeBcpIn(dh);
+	}
+
+	public int refuseBcpIn(String dh) {
+		return mainDao.refuseBcpIn(dh);
+	}
+
+	public int agreeBcpOut(String dh) {
+		return mainDao.agreeBcpOut(dh);
+	}
+
+	public int refuseBcpOut(String dh) {
+		return mainDao.refuseBcpOut(dh);
+	}
+
+	public int agreeBcpTk(String dh) {
+		return mainDao.agreeBcpTk(dh);
+	}
+
+	public int refuseBcpTk(String dh) {
+		return mainDao.refuseBcpTk(dh);
+	}
+
+	public List<BcpTrackResult> getBcpInShowData(String qrCodeId) {
+		return mainDao.getBcpInShowData(qrCodeId);
+	}
+
+	public List<SmallCpTrackResult> getSmallCpInShowData(String qrCodeId) {
+		return mainDao.getSmallCpInShowData(qrCodeId);
+	}
+
+	public List<BigCpTrackResult> getBigCpIn2ShowData(String qrCodeId) {
+		return mainDao.getBigCpIn2ShowData(qrCodeId);
+	}
+
+	public int changeWLInPassCheckFlag(String qrCodeId, String zjy) {
+		return mainDao.changeWLInPassCheckFlag(qrCodeId,zjy);
+	}
+
+	public int changeBCPInPassCheckFlag(String qrCodeId, String zjy) {
+		return mainDao.changeBCPInPassCheckFlag(qrCodeId,zjy);
+	}
+
+	public int changeSMALL_CPInPassCheckFlag(String qrCodeId, String zjy) {
+		return mainDao.changeSMALL_CPInPassCheckFlag(qrCodeId,zjy);
+	}
+
+	public int changeBIG_CPInPassCheckFlag(String qrCodeId, String zjy) {
+		return mainDao.changeBIG_CPInPassCheckFlag(qrCodeId,zjy);
+	}
 }

@@ -245,4 +245,42 @@ public interface MainDao {
     BcpTkdBean getBcpTkdBean(String dh);
 
     List<BcpTkShowBean> getBcpTkShowBeanListByBackDh(String dh);
+
+    int agreeWlIn(String dh);
+
+    int refuseWlIn(String dh);
+
+    int agreeWlOut(String dh);
+
+    int refuseWlOut(String dh);
+
+    int agreeWlTk(String dh);
+
+    int refuseWlTk(String dh);
+
+    int agreeBcpIn(String dh);
+
+    int refuseBcpIn(String dh);
+
+    int agreeBcpOut(String dh);
+
+    int refuseBcpOut(String dh);
+
+    int agreeBcpTk(String dh);
+
+    int refuseBcpTk(String dh);
+
+    List<BcpTrackResult> getBcpInShowData(String qrCodeId);
+
+    List<SmallCpTrackResult> getSmallCpInShowData(String qrCodeId);
+
+    List<BigCpTrackResult> getBigCpIn2ShowData(String qrCodeId);
+
+    int changeWLInPassCheckFlag(String qrCodeId, String zjy);
+
+    int changeBCPInPassCheckFlag(String qrCodeId, String zjy);
+
+    int changeSMALL_CPInPassCheckFlag(String qrCodeId, String zjy);
+
+    int changeBIG_CPInPassCheckFlag(String qrCodeId, String zjy);
 }

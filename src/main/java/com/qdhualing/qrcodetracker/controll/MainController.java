@@ -1719,6 +1719,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1751,6 +1752,7 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
     }
+
     /**
      * @return
      * @author 马鹏昊
@@ -1775,6 +1777,448 @@ public class MainController {
                 List<BcpTkShowBean> wlinDataList = mainService.getBcpTkShowBeanListByBackDh(param.getDh());
                 dataResult.setBeans(wlinDataList);
                 result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料入库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeWlIn", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeWlIn(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeWlIn(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料入库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseWlIn", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseWlIn(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseWlIn(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料出库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeWlOut", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeWlOut(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeWlOut(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料出库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseWlOut", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseWlOut(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseWlOut(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料退库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeWlTk", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeWlTk(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeWlTk(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改物料退库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseWlTk", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseWlTk(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseWlTk(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品入库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeBcpIn", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeBcpIn(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeBcpIn(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品入库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseBcpIn", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseBcpIn(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseBcpIn(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品出库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeBcpOut", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeBcpOut(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeBcpOut(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品出库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseBcpOut", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseBcpOut(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseBcpOut(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品退库单审核标志为已审核
+     */
+    @RequestMapping(value = "/agreeBcpTk", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult agreeBcpTk(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.agreeBcpTk(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改半成品退库单审核标志为未通过审核
+     */
+    @RequestMapping(value = "/refuseBcpTk", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult refuseBcpTk(String json) {
+        VerifyParam param = ParamsUtils.handleParams(json, VerifyParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int a = mainService.refuseBcpTk(param.getDh());
+                if (a == 1) {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+                } else {
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "审核失败");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 根据sort获取不同的检验信息
+     */
+    @RequestMapping(value = "/getQualityData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getQualityData(String json) {
+        QualityDataParam param = ParamsUtils.handleParams(json, QualityDataParam.class);
+        ActionResult<QualityDataResult> result = new ActionResult<QualityDataResult>();
+        if (param != null) {
+            try {
+                QualityDataResult data = new QualityDataResult();
+                switch (param.getSort()) {
+                    case TrackType.WL:
+                        List<WlTrackResult> list1 = mainService.getWlInData(param.getQrCodeId());
+                        if (list1 != null && list1.size() > 0) {
+                            WlTrackResult b1 = list1.get(0);
+                            data.setWlCode(b1.getWlCode());
+                            data.setWlProductName(b1.getProductName());
+                            data.setWlChd(b1.getChd());
+                            data.setWlCzy(b1.getCzy());
+                            data.setWlDw(b1.getDw());
+                            data.setWlDwzl(b1.getDwzl());
+                            data.setWlGg(b1.getGg());
+                            data.setWlLlTime(b1.getLlTime());
+                            data.setWlPczl(b1.getPczl());
+                            data.setWlSortName(b1.getSortName());
+                            data.setWlYlpc(b1.getYlpc());
+                        }
+                        break;
+                    case TrackType.BCP:
+                        List<BcpTrackResult> list2 = mainService.getBcpInShowData(param.getQrCodeId());
+                        if (list2 != null && list2.size() > 0) {
+                            BcpTrackResult b1 = list2.get(0);
+                            data.setBcpCode(b1.getBcpCode());
+                            data.setBcpProductName(b1.getProductName());
+                            data.setBcpCheJian(b1.getCheJian());
+                            data.setBcpCzy(b1.getCzy());
+                            data.setBcpDw(b1.getDw());
+                            data.setBcpDwzl(b1.getDwzl());
+                            data.setBcpGg(b1.getGg());
+                            data.setBcpGx(b1.getGx());
+                            data.setBcpScpc(b1.getScpc());
+                            data.setBcpScTime(b1.getScTime());
+                            data.setBcpSortName(b1.getSortName());
+                            data.setBcpYlpc(b1.getYlpc());
+                        }
+                        break;
+                    case TrackType.SMALL_CP:
+                        List<SmallCpTrackResult> list3 = mainService.getSmallCpInShowData(param.getQrCodeId());
+                        if (list3 != null && list3.size() > 0) {
+                            SmallCpTrackResult b1 = list3.get(0);
+                            data.setCpCode(b1.getCpCode());
+                            data.setCpCzy(b1.getCzy());
+                            data.setCpDw(b1.getDw());
+                            data.setCpDwzl(b1.getDwzl());
+                            data.setCpGg(b1.getGg());
+                            data.setCpName(b1.getCpName());
+                            data.setCpScpc(b1.getScpc());
+                            data.setCpScTime(b1.getScTime());
+                            data.setCpsortName(b1.getSortName());
+                            data.setCpYlpc(b1.getYlpc());
+                        }
+                        break;
+                    case TrackType.BIG_CP:
+                        List<BigCpTrackResult> list4 = mainService.getBigCpIn2ShowData(param.getQrCodeId());
+                        if (list4 != null && list4.size() > 0) {
+                            BigCpTrackResult b1 = list4.get(0);
+                            data.setCpCode(b1.getCpCode());
+                            data.setCpCzy(b1.getCzy());
+                            data.setCpDw(b1.getDw());
+                            data.setCpDwzl(b1.getDwzl());
+                            data.setCpGg(b1.getGg());
+                            data.setCpName(b1.getCpName());
+                            data.setCpScpc(b1.getScpc());
+                            data.setCpScTime(b1.getScTime());
+                            data.setCpsortName(b1.getSortName());
+                            data.setCpYlpc(b1.getYlpc());
+                        }
+                        break;
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 通过审核
+     */
+    @RequestMapping(value = "/passCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult passCheck(String json) {
+        QualityDataParam param = ParamsUtils.handleParams(json, QualityDataParam.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = -1;
+                switch (param.getSort()) {
+                    case TrackType.WL:
+                        b = mainService.changeWLInPassCheckFlag(param.getQrCodeId(),param.getZjy());
+                        break;
+                    case TrackType.BCP:
+                        b = mainService.changeBCPInPassCheckFlag(param.getQrCodeId(),param.getZjy());
+                        break;
+                    case TrackType.SMALL_CP:
+                        b = mainService.changeSMALL_CPInPassCheckFlag(param.getQrCodeId(),param.getZjy());
+                        break;
+                    case TrackType.BIG_CP:
+                        b = mainService.changeBIG_CPInPassCheckFlag(param.getQrCodeId(),param.getZjy());
+                        break;
+                }
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改质检状态失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
             } catch (Exception e) {
                 e.printStackTrace();

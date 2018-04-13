@@ -2,6 +2,97 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <update id="changeBIG_CPInPassCheckFlag">
+        UPDATE M_CPIn2 SET ZJZT = 1, ZJY=#{1}
+        WHERE QRCode_ID = #{0}
+    </update>
+
+    <update id="changeSMALL_CPInPassCheckFlag">
+        UPDATE M_CPIn SET ZJZT = 1, ZJY=#{1}
+        WHERE QRCode_ID = #{0}
+    </update>
+
+    <update id="changeBCPInPassCheckFlag">
+        UPDATE M_BCPIn SET ZJZT = 1, ZJY=#{1}
+        WHERE QRCode_ID = #{0}
+    </update>
+
+    <update id="changeWLInPassCheckFlag">
+        UPDATE M_WLIn SET ZJZT = 1, ZJY=#{1}
+        WHERE QRCode_ID = #{0}
+    </update>
+
+
+    <select id="getBigCpIn2ShowData" resultType="com.qdhualing.qrcodetracker.bean.BigCpTrackResult">
+        SELECT M_CPIn2.CP_Name , M_CPIn2.YLPC , M_CPIn2.SCPC ,M_CPIn2.CP_Code,
+        M_CPIn2.SC_Time , M_CPIn2.GG , Pdt_Sort2.Sort_Name ,M_CPIn2.DWZL,
+        M_CPIn2.CZY ,M_CPIn2.DW
+        FROM M_CPIn2 LEFT JOIN Pdt_Sort2 on M_CPIn2.SortID = Pdt_Sort2.ID
+        WHERE M_CPIn2.QRCode_ID = #{0}
+    </select>
+    <select id="getSmallCpInShowData" resultType="com.qdhualing.qrcodetracker.bean.SmallCpTrackResult">
+        SELECT M_CPIn.CP_Name , M_CPIn.YLPC , M_CPIn.SCPC ,M_CPIn.CP_Code,
+        M_CPIn.SC_Time , M_CPIn.GG , Pdt_Sort2.Sort_Name ,M_CPIn.DWZL,
+        M_CPIn.CZY ,M_CPIn.DW
+        FROM M_CPIn LEFT JOIN Pdt_Sort2 on M_CPIn.SortID = Pdt_Sort2.ID
+        WHERE M_CPIn.QRCode_ID = #{0}
+    </select>
+    <select id="getBcpInShowData" resultType="com.qdhualing.qrcodetracker.bean.BcpTrackResult">
+        SELECT M_BCPIn.ProductName , M_BCPIn.YLPC , M_BCPIn.SCPC ,M_BCPIn.BCP_Code,
+        M_BCPIn.SC_Time , M_BCPIn.GG , Pdt_Sort2.Sort_Name ,M_BCPIn.DWZL,
+        M_BCPIn.CZY ,M_BCPIn.DW ,M_BCPIn.CheJian ,M_BCPIn.GX
+        FROM M_BCPIn LEFT JOIN Pdt_Sort2 on M_BCPIn.SortID = Pdt_Sort2.ID
+        WHERE M_BCPIn.QRCode_ID = #{0}
+    </select>
+
+    <update id="refuseBcpTk">
+        UPDATE Tkd_Bcp SET Check_State = 0
+        WHERE BackDh = #{0}
+    </update>
+    <update id="agreeBcpTk">
+        UPDATE Tkd_Bcp SET Check_State = 1
+        WHERE BackDh = #{0}
+    </update>
+    <update id="refuseBcpOut">
+        UPDATE Ckd_Bcp SET Check_State = 0
+        WHERE OutDh = #{0}
+    </update>
+    <update id="agreeBcpOut">
+        UPDATE Ckd_Bcp SET Check_State = 1
+        WHERE OutDh = #{0}
+    </update>
+    <update id="refuseBcpIn">
+        UPDATE Rkd_Bcp SET Check_State = 0
+        WHERE InDh = #{0}
+    </update>
+    <update id="agreeBcpIn">
+        UPDATE Rkd_Bcp SET Check_State = 1
+        WHERE InDh = #{0}
+    </update>
+    <update id="refuseWlTk">
+        UPDATE Tkd_Wl SET Check_State = 0
+        WHERE BackDh = #{0}
+    </update>
+    <update id="agreeWlTk">
+        UPDATE Tkd_Wl SET Check_State = 1
+        WHERE BackDh = #{0}
+    </update>
+    <update id="refuseWlOut">
+        UPDATE Ckd_Wl SET Check_State = 0
+        WHERE OutDh = #{0}
+    </update>
+    <update id="agreeWlOut">
+        UPDATE Ckd_Wl SET Check_State = 1
+        WHERE OutDh = #{0}
+    </update>
+    <update id="refuseWlIn">
+        UPDATE Rkd_Wl SET Check_State = 0
+        WHERE InDh = #{0}
+    </update>
+    <update id="agreeWlIn">
+        UPDATE Rkd_Wl SET Check_State = 1
+        WHERE InDh = #{0}
+    </update>
     <select id="getBcpTkShowBeanListByBackDh" resultType="com.qdhualing.qrcodetracker.bean.BcpTkShowBean">
         SELECT *
         FROM M_BCPBk
