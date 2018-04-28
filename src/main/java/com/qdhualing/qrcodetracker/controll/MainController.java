@@ -2180,6 +2180,7 @@ public class MainController {
                         }
                         break;
                 }
+                result.setResult(data);
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2227,5 +2228,196 @@ public class MainController {
         }
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
     }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——物料入库
+     */
+    @RequestMapping(value = "/updateWlInData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateWlInData(String json) {
+        WlInVerifyResult param = ParamsUtils.handleListParams(json, WlInVerifyResult.class,"beans",WLINShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateWlRkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料入库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }else {
+                    List<WLINShowBean> beans = param.getBeans();
+                    for (int i = 0; i < beans.size(); i++) {
+                        b =  mainService.updateWlInData(beans.get(i));
+                        if (b<0){
+                            result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料入库数据失败");
+                            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                        }
+                    }
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——物料出库
+     */
+    @RequestMapping(value = "/updateWlOutData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateWlOutData(String json) {
+        WlOutVerifyResult param = ParamsUtils.handleListParams(json, WlOutVerifyResult.class,"beans",WLOutShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateWlCkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料出库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }else {
+                    List<WLOutShowBean> beans = param.getBeans();
+                    for (int i = 0; i < beans.size(); i++) {
+                        b =  mainService.updateWlOutData(beans.get(i));
+                        if (b<0){
+                            result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料出库数据失败");
+                            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                        }
+                    }
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——物料出库
+     */
+    @RequestMapping(value = "/updateWlTkData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateWlTkData(String json) {
+        WlTkVerifyResult param = ParamsUtils.handleListParams(json, WlTkVerifyResult.class,"beans",WLTkShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateWlTkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料退库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }else {
+                    List<WLTkShowBean> beans = param.getBeans();
+                    for (int i = 0; i < beans.size(); i++) {
+                        b =  mainService.updateWlTkData(beans.get(i));
+                        if (b<0){
+                            result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改物料退库数据失败");
+                            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                        }
+                    }
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——半成品/成品入库
+     */
+    @RequestMapping(value = "/updateBcpInData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateBcpInData(String json) {
+        BcpInVerifyResult param = ParamsUtils.handleListParams(json, BcpInVerifyResult.class,"beans",BcpInShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateBcpRkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改半成品入库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }else {
+                    List<BcpInShowBean> beans = param.getBeans();
+                    for (int i = 0; i < beans.size(); i++) {
+                        b =  mainService.updateBcpInData(beans.get(i));
+                        b =  mainService.updateSmallCpInData(beans.get(i));
+                        b =  mainService.updateBigCpInData(beans.get(i));
+                    }
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——半成品/成品入库
+     */
+    @RequestMapping(value = "/updateCpOutData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateCpOutData(String json) {
+        CpOutVerifyResult param = ParamsUtils.handleListParams(json, CpOutVerifyResult.class,"beans",CpOutShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateCpCkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改成品出库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 修改审核数据——半成品/成品入库
+     */
+    @RequestMapping(value = "/updateBcpTkData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult updateBcpTkData(String json) {
+        BcpTkVerifyResult param = ParamsUtils.handleListParams(json, BcpTkVerifyResult.class,"beans",BcpTkShowBean.class);
+        ActionResult<ActionResult> result = new ActionResult<ActionResult>();
+        if (param != null) {
+            try {
+                int b = mainService.updateBcpTkdData(param);
+                if (b<0){
+                    result = ActionResultUtils.setResultMsg(result,ActionResult.STATUS_MESSAGE_ERROR,"修改半成品退库单数据失败");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+                }else {
+                    List<BcpTkShowBean> beans = param.getBeans();
+                    for (int i = 0; i < beans.size(); i++) {
+                        b =  mainService.updateBcpTkData(beans.get(i));
+                    }
+                }
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
+
+
 
 }

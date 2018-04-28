@@ -637,4 +637,80 @@ public class MainService {
 	public int changeBIG_CPInPassCheckFlag(String qrCodeId, String zjy) {
 		return mainDao.changeBIG_CPInPassCheckFlag(qrCodeId,zjy);
 	}
+
+	public List<WlRkdBean> getWlRkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getWlRkNonPassCheckDataByCzy(realName);
+	}
+
+	public List<WlCkdBean> getWlCkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getWlCkNonPassCheckDataByCzy(realName);
+	}
+
+	public List<WlTkdBean> getWlTkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getWlTkNonPassCheckDataByCzy(realName);
+	}
+
+	public List<BcpRkdBean> getBcpRkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getBcpRkNonPassCheckDataByCzy(realName);
+	}
+
+	public List<BcpCkdBean> getBcpCkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getBcpCkNonPassCheckDataByCzy(realName);
+	}
+
+	public List<BcpTkdBean> getBcpTkNonPassCheckDataByCzy(String realName) {
+		return mainDao.getBcpTkNonPassCheckDataByCzy(realName);
+	}
+
+	public int updateWlInData(WLINShowBean param) {
+		return mainDao.updateWlInData(param);
+	}
+
+	public int updateWlRkdData(WlInVerifyResult param) {
+		return mainDao.updateWlRkdData(param);
+	}
+
+	public int updateWlCkdData(WlOutVerifyResult param) {
+		return mainDao.updateWlCkdData(param);
+	}
+
+	public int updateWlOutData(WLOutShowBean wlOutShowBean) {
+		return mainDao.updateWlOutData(wlOutShowBean);
+	}
+
+	public int updateWlTkdData(WlTkVerifyResult param) {
+		return mainDao.updateWlTkdData(param);
+	}
+
+	public int updateWlTkData(WLTkShowBean wlTkShowBean) {
+		return mainDao.updateWlTkData(wlTkShowBean);
+	}
+
+	public int updateBcpRkdData(BcpInVerifyResult param) {
+		return mainDao.updateBcpRkdData(param);
+	}
+
+	public int updateBcpInData(BcpInShowBean bcpInShowBean) {
+		return mainDao.updateBcpInData(bcpInShowBean);
+	}
+
+	public int updateSmallCpInData(BcpInShowBean bcpInShowBean) {
+		return mainDao.updateSmallCpInData(bcpInShowBean);
+	}
+
+	public int updateBigCpInData(BcpInShowBean bcpInShowBean) {
+		return mainDao.updateBigCpInData(bcpInShowBean);
+	}
+
+	public int updateBcpTkdData(BcpTkVerifyResult param) {
+		return mainDao.updateBcpTkdData(param);
+	}
+
+	public int updateBcpTkData(BcpTkShowBean bcpTkShowBean) {
+		return mainDao.updateBcpTkData(bcpTkShowBean);
+	}
+
+	public int updateCpCkdData(CpOutVerifyResult param) {
+		return mainDao.updateCpCkdData(param);
+	}
 }

@@ -283,4 +283,42 @@ public interface MainDao {
     int changeSMALL_CPInPassCheckFlag(String qrCodeId, String zjy);
 
     int changeBIG_CPInPassCheckFlag(String qrCodeId, String zjy);
+
+    List<WlRkdBean> getWlRkNonPassCheckDataByCzy(String realName);
+
+    List<WlCkdBean> getWlCkNonPassCheckDataByCzy(String realName);
+
+    List<WlTkdBean> getWlTkNonPassCheckDataByCzy(String realName);
+
+    List<BcpRkdBean> getBcpRkNonPassCheckDataByCzy(String realName);
+
+    List<BcpCkdBean> getBcpCkNonPassCheckDataByCzy(String realName);
+
+    List<BcpTkdBean> getBcpTkNonPassCheckDataByCzy(String realName);
+
+    int updateWlInData(WLINShowBean param);
+
+    int updateWlRkdData(WlInVerifyResult param);
+
+    int updateWlCkdData(WlOutVerifyResult param);
+
+    int updateWlOutData(WLOutShowBean wlOutShowBean);
+
+    int updateWlTkdData(WlTkVerifyResult param);
+
+    int updateWlTkData(WLTkShowBean wlTkShowBean);
+
+    int updateBcpRkdData(BcpInVerifyResult param);
+
+    int updateBcpInData(BcpInShowBean bcpInShowBean);
+
+    int updateSmallCpInData(BcpInShowBean bcpInShowBean);
+
+    int updateBigCpInData(BcpInShowBean bcpInShowBean);
+
+    int updateBcpTkdData(BcpTkVerifyResult param);
+
+    int updateBcpTkData(BcpTkShowBean bcpTkShowBean);
+
+    int updateCpCkdData(CpOutVerifyResult param);
 }

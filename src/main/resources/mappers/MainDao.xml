@@ -2,6 +2,68 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <update id="updateCpCkdData" parameterType="com.qdhualing.qrcodetracker.bean.CpOutVerifyResult">
+        UPDATE Ckd_Bcp SET LhDw = #{lhDw}, FhFzr=#{fhFzr}, FhR=#{lhR}, LhFzr=#{lhFzr}, Remark=#{remark}
+        WHERE OutDh = #{outDh}
+    </update>
+
+    <update id="updateBcpTkData" parameterType="com.qdhualing.qrcodetracker.bean.BcpTkShowBean">
+        UPDATE M_BCPBk SET SHL=#{shl}, remark=#{remark}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateBcpTkdData" parameterType="com.qdhualing.qrcodetracker.bean.BcpTkVerifyResult">
+        UPDATE Tkd_Bcp SET ThDw = #{thDw}, ThFzr=#{thFzr}, ShR=#{thR}, ShFzr=#{shFzr}, Remark=#{remark}
+        WHERE BackDh = #{backDh}
+    </update>
+
+    <update id="updateBigCpInData" parameterType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        UPDATE M_CPIn2 SET CP_Code = #{wLCode}, CP_Name=#{productName}, SortID=#{sortID}, YLPC=#{yLPC},
+        DWZL=#{dWZL}, GG=#{gG}, DW=#{dW}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateSmallCpInData" parameterType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        UPDATE M_CPIn SET CP_Code = #{wLCode}, CP_Name=#{productName}, SortID=#{sortID}, YLPC=#{yLPC},
+        DWZL=#{dWZL}, SHL=#{shl}, GG=#{gG}, DW=#{dW}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateBcpInData" parameterType="com.qdhualing.qrcodetracker.bean.BcpInShowBean">
+        UPDATE M_BCPIn SET BCP_Code = #{wLCode}, ProductName=#{productName}, SortID=#{sortID}, YLPC=#{yLPC},
+        DWZL=#{dWZL}, SHL=#{shl}, GG=#{gG}, DW=#{dW}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateBcpRkdData" parameterType="com.qdhualing.qrcodetracker.bean.BcpInVerifyResult">
+        UPDATE Rkd_Bcp SET JhDw = #{jhDw}, JhFzr=#{jhFzr}, ShR=#{jhR}, ShFzr=#{shFzr}, Remark=#{remark}
+        WHERE InDh = #{inDh}
+    </update>
+
+    <update id="updateWlTkData" parameterType="com.qdhualing.qrcodetracker.bean.WLTkShowBean">
+        UPDATE M_WLBk SET SHL=#{shl}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateWlTkdData" parameterType="com.qdhualing.qrcodetracker.bean.WlTkVerifyResult">
+        UPDATE Tkd_Wl SET ThDw = #{thDw}, ThFzr=#{thFzr}, ShR=#{thR}, ShFzr=#{shFzr}, Remark=#{remark}
+        WHERE BackDh = #{backDh}
+    </update>
+
+    <update id="updateWlOutData" parameterType="com.qdhualing.qrcodetracker.bean.WLINShowBean">
+        UPDATE M_WLOUT SET SHL=#{shl}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateWlCkdData" parameterType="com.qdhualing.qrcodetracker.bean.WlOutVerifyResult">
+        UPDATE Ckd_Wl SET LhDw = #{lhDw}, LhFzr=#{lhFzr}, FhR=#{lhR}, FhFzr=#{fhFzr}, Remark=#{remark}
+        WHERE OutDh = #{outDh}
+    </update>
+
+    <update id="updateWlInData" parameterType="com.qdhualing.qrcodetracker.bean.WLINShowBean">
+        UPDATE M_WLIn SET WL_Code = #{wLCode}, ProductName=#{productName}, SortID=#{sortID}, YLPC=#{yLPC}, PCZL=#{pCZL},
+        DWZL=#{dWZL}, SHL=#{shl}, CHD=#{cHD}, GG=#{gG}, DW=#{dW}, remark=#{remark}
+        WHERE QRCode_ID = #{qRCodeID}
+    </update>
+    <update id="updateWlRkdData" parameterType="com.qdhualing.qrcodetracker.bean.WlInVerifyResult">
+        UPDATE Rkd_Wl SET JhDw = #{fhDw}, ShRq=#{shRq}, ShFzr=#{shFzr}, JhR=#{fhR}, JhFzr=#{jhFzr}, Remark=#{remark}
+        WHERE InDh = #{inDh}
+    </update>
+
     <update id="changeBIG_CPInPassCheckFlag">
         UPDATE M_CPIn2 SET ZJZT = 1, ZJY=#{1}
         WHERE QRCode_ID = #{0}
