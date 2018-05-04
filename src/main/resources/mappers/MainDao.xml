@@ -2,6 +2,42 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdhualing.qrcodetracker.dao.MainDao">
 
+    <select id="getBcpTkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.BcpTkdBean">
+        SELECT *
+        FROM Tkd_Bcp
+        WHERE ThR = #{0} AND Check_State = 0
+    </select>
+    <select id="getBcpCkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.BcpCkdBean">
+        SELECT *
+        FROM Ckd_Bcp
+        WHERE FhR = #{0} AND Check_State = 0
+    </select>
+    <select id="getBcpRkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.BcpRkdBean">
+        SELECT *
+        FROM Rkd_Bcp
+        WHERE JhR = #{0} AND Check_State = 0
+    </select>
+    <select id="getWlTkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.WlTkdBean">
+        SELECT *
+        FROM Tkd_Wl
+        WHERE ThR = #{0} AND Check_State = 0
+    </select>
+    <select id="getWlCkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.WlCkdBean">
+        SELECT *
+        FROM Ckd_Wl
+        WHERE LhR = #{0} AND Check_State = 0
+    </select>
+    <select id="getWlRkCanModifyData" resultType="com.qdhualing.qrcodetracker.bean.WlRkdBean">
+        SELECT *
+        FROM Rkd_Wl
+        WHERE ShR = #{0} AND Check_State = 0
+    </select>
+
+    <select id="getAllPerson" resultType="com.qdhualing.qrcodetracker.bean.PersonBean">
+		SELECT *
+		FROM Hl_User
+	</select>
+
     <update id="updateCpCkdData" parameterType="com.qdhualing.qrcodetracker.bean.CpOutVerifyResult">
         UPDATE Ckd_Bcp SET LhDw = #{lhDw}, FhFzr=#{fhFzr}, FhR=#{lhR}, LhFzr=#{lhFzr}, Remark=#{remark}
         WHERE OutDh = #{outDh}
@@ -56,7 +92,7 @@
 
     <update id="updateWlInData" parameterType="com.qdhualing.qrcodetracker.bean.WLINShowBean">
         UPDATE M_WLIn SET WL_Code = #{wLCode}, ProductName=#{productName}, SortID=#{sortID}, YLPC=#{yLPC}, PCZL=#{pCZL},
-        DWZL=#{dWZL}, SHL=#{shl}, CHD=#{cHD}, GG=#{gG}, DW=#{dW}, remark=#{remark}
+        DWZL=#{dWZL}, SHL=#{shl}, CHD=#{cHD}, GG=#{gG}, Unit=#{dW}, remark=#{remark}
         WHERE QRCode_ID = #{qRCodeID}
     </update>
     <update id="updateWlRkdData" parameterType="com.qdhualing.qrcodetracker.bean.WlInVerifyResult">
@@ -272,7 +308,7 @@
     <select id="getWlRkNonCheckData" resultType="com.qdhualing.qrcodetracker.bean.WlRkdBean">
         SELECT *
         FROM Rkd_Wl
-        WHERE ShR = #{0} AND Check_State = 0
+        WHERE ShFzr = #{0} AND Check_State = 0
     </select>
 
     <select id="getFhrFromBcpCkd" resultType="java.lang.String">
@@ -353,7 +389,7 @@
     <select id="getWlInData" resultType="com.qdhualing.qrcodetracker.bean.WlTrackResult">
         SELECT M_WLIn.ProductName , M_WLIn.YLPC , M_WLIn.PCZL ,M_WLIn.WL_Code,
         M_WLIn.LL_Time , M_WLIn.GG , Pdt_Sort2.Sort_Name ,M_WLIn.DWZL,
-        M_WLIn.CHD , M_WLIn.CZY ,M_WLIn.DW
+        M_WLIn.CHD , M_WLIn.CZY ,M_WLIn.Unit
         FROM M_WLIn LEFT JOIN Pdt_Sort2 on M_WLIn.SortID = Pdt_Sort2.ID
         WHERE M_WLIn.QRCode_ID = #{0}
     </select>
@@ -1862,6 +1898,41 @@ SmlPk45		= #{smlPk45},
         WHERE QRCode_ID = #{0}
     </select>
 
+    <update id="updateBcpIn" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
+        update M_BCPIn
+        set   ProductName=#{productName},
+                SortID=#{sortID},
+                BCP_Code= #{bcpCode},
+                YLPC =#{ylpc},
+                SCPC=#{scpc},
+                GG= #{gg},
+            SHL=#{shl},
+                SC_Time=#{scTime},
+            DWZL= #{dwzl},
+                KS_Time=#{ksTime},
+                WC_Time=#{wcTime},
+                GX=#{gx},
+                CZY=#{czy},
+                ZJY=#{zjy},
+                JYZT=#{jyzt},
+                JYBZ= #{jybz},
+                BZ= #{bz},
+                CheJian=#{cheJian},
+                InDh=#{indh},
+                DW=#{dw},
+                Yl_1= #{yl1},
+                Yl_2= #{yl2},
+                Yl_3=#{yl3},
+                Yl_4= #{yl4},
+                Yl_5=#{yl5},
+                Yl_6= #{yl6},
+                Yl_7= #{yl7},
+                Yl_8=#{yl8},
+                Yl_9=#{yl9},
+                Yl_10=#{yl10},
+    where QRCode_ID=#{qrCodeId}
+    </update>
+
     <insert id="insertBCPIn" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
         insert into M_BCPIn
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -2695,6 +2766,27 @@ SmlPk45		= #{smlPk45},
         </trim>
     </insert>
 
+    <update id="updateWLIN_M" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
+        update M_WLIn
+        set
+            ProductName = #{productName},
+            DWZL = #{dWZL},
+            PCZL = #{pCZL},
+            Unit = #{dW},
+            Bz = #{bz},
+            SortID = #{lb},
+            remark = #{remark},
+            WL_Code = #{wLCode},
+            YLPC = #{yLPC},
+            GG = #{gG},
+            CHD = #{cHD},
+            SHL = #{shl},
+            InDh = #{inDh},
+            CZY = #{cZY},
+            LL_Time = #{lLTime}
+        where QRCode_ID=#{qRCodeID}
+    </update>
+
     <insert id="createWLIN_M" parameterType="com.qdhualing.qrcodetracker.bean.WLINParam">
         insert into M_WLIn
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -2702,7 +2794,7 @@ SmlPk45		= #{smlPk45},
             <if test="productName!=null">ProductName,</if>
             <if test="dWZL!=null">DWZL,</if>
             <if test="pCZL!=null">PCZL,</if>
-            <if test="dW!=null">DW,</if>
+            <if test="dW!=null">Unit,</if>
             <if test="bz!=null">Bz,</if>
             <if test="lb!=null">SortID,</if>
             <if test="remark!=null">remark,</if>

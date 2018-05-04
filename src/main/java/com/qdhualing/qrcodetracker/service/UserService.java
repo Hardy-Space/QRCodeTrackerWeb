@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,13 +40,17 @@ public class UserService implements Serializable{
     public MainResult getMainData(MainParams params) {
 
         UserAuthority userAuthority = userDao.getMainData(params.getUserId());
-        List<Integer> authList = AuthorityParseUtil.parseToFunctionList(userAuthority.getAuthMobile(),userAuthority.getGroup2());
-
-        List<Module2> authNameList = userDao.getAuthNameList(authList);
-
-
         MainResult mainResult = new MainResult();
         mainResult.setDepartmentName(userAuthority.getGroupName());
+        List<Integer> authList = AuthorityParseUtil.parseToFunctionList(userAuthority.getAuthMobile(),userAuthority.getGroup2());
+
+        List<Module2> authNameList = new ArrayList<>();
+        if (authList == null||authList.size()<=0) {
+            mainResult.setCanUseFunctionList(authNameList);
+            return mainResult;
+        }
+
+        authNameList = userDao.getAuthNameList(authList);
         mainResult.setCanUseFunctionList(authNameList);
         return mainResult;
     }

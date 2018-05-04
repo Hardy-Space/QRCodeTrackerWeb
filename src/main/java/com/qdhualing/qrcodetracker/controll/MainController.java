@@ -73,10 +73,12 @@ public class MainController {
         WLINParam wlinParam = ParamsUtils.handleParams(json, WLINParam.class);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         wlinParam.setlLTime(df.format(System.currentTimeMillis()));
+        wlinParam.setBz(1);
         ActionResult<DataResult> result = new ActionResult<DataResult>();
         if (wlinParam != null && wlinParam.getInDh() != null) {
             try {
-                int a = mainService.createWLIN_M(wlinParam);
+//                int a = mainService.createWLIN_M(wlinParam);
+                int a = mainService.updateWLIN_M(wlinParam);
                 if (a <= 0) {
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "扫描产品不存在");
                 } else {
@@ -651,7 +653,8 @@ public class MainController {
         BCPINParam bcpInParam = ParamsUtils.handleParams(json, BCPINParam.class);
         ActionResult<ActionResult> result = new ActionResult<ActionResult>();
         try {
-            int b = mainService.insertBCPIn(bcpInParam);
+//            int b = mainService.insertBCPIn(bcpInParam);
+            int b = mainService.updateBcpIn(bcpInParam);
             if (b <= 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "插入BCPIn失败");
             }
@@ -2418,6 +2421,118 @@ public class MainController {
         return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
     }
 
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取所有人员信息
+     */
+    @RequestMapping(value = "/getAllPerson", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getAllPerson() {
+        ActionResult<PersonResult> result = new ActionResult<PersonResult>();
+        try {
+            PersonResult personResult = mainService.getAllPerson();
+            if (personResult.getPersonBeans() == null || personResult.getPersonBeans().size() <= 0) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "无人员信息");
+            }
+            result.setResult(personResult);
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "获取人员信息成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+        }
+    }
 
+    /**
+     * @return
+     * @author 马鹏昊
+     * @desc 获取可修改库单数据
+     */
+    @RequestMapping(value = "/getCanModifyData", method = RequestMethod.POST)
+    @ResponseBody
+    public ActionResult getCanModifyData(String json) {
+        MainParams param = ParamsUtils.handleParams(json, MainParams.class);
+        ActionResult<NonCheckResult> result = new ActionResult<NonCheckResult>();
+        if (param != null) {
+            try {
+                NonCheckResult dataResult = new NonCheckResult();
+                List<NonCheckBean> allBeans = new ArrayList<NonCheckBean>();
+                List<WlRkdBean> wlRkNonCheckData = mainService.getWlRkCanModifyData(param.getRealName());
+                for (int i = 0; i < wlRkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlRkdBean single = wlRkNonCheckData.get(i);
+                    bean.setDh(single.getInDh());
+                    bean.setName("物料入库单");
+                    bean.setTime(single.getShrq());
+                    allBeans.add(bean);
+                }
+                List<WlCkdBean> wlCkNonCheckData = mainService.getWlCkCanModifyData(param.getRealName());
+                for (int i = 0; i < wlCkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlCkdBean single = wlCkNonCheckData.get(i);
+                    bean.setDh(single.getOutDh());
+                    bean.setName("物料出库单");
+                    bean.setTime(single.getLhRq());
+                    allBeans.add(bean);
+                }
+                List<WlTkdBean> wlTkNonCheckData = mainService.getWlTkCanModifyData(param.getRealName());
+                for (int i = 0; i < wlTkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    WlTkdBean single = wlTkNonCheckData.get(i);
+                    bean.setDh(single.getBackDh());
+                    bean.setName("物料退库单");
+                    bean.setTime(single.getThRq());
+                    allBeans.add(bean);
+                }
+                List<BcpRkdBean> bcpRkNonCheckData = mainService.getBcpRkCanModifyData(param.getRealName());
+                for (int i = 0; i < bcpRkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpRkdBean single = bcpRkNonCheckData.get(i);
+                    bean.setDh(single.getInDh());
+                    bean.setName("半成品/成品入库单");
+                    bean.setTime(single.getShrq());
+                    allBeans.add(bean);
+                }
+                List<BcpCkdBean> bcpCkNonCheckData = mainService.getBcpCkCanModifyData(param.getRealName());
+                for (int i = 0; i < bcpCkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpCkdBean single = bcpCkNonCheckData.get(i);
+                    bean.setDh(single.getOutDh());
+                    bean.setName("成品出库单");
+                    bean.setTime(single.getLhRq());
+                    allBeans.add(bean);
+                }
+                List<BcpTkdBean> bcpTkNonCheckData = mainService.getBcpTkCanModifyData(param.getRealName());
+                for (int i = 0; i < bcpTkNonCheckData.size(); i++) {
+                    NonCheckBean bean = new NonCheckBean();
+                    BcpTkdBean single = bcpTkNonCheckData.get(i);
+                    bean.setDh(single.getBackDh());
+                    bean.setName("半成品退库单");
+                    bean.setTime(single.getThRq());
+                    allBeans.add(bean);
+                }
+                for (int i = 0; i < allBeans.size() - 1; i++) {
+                    for (int j = 0; j < allBeans.size() - 1 - i; j++)// j开始等于0，
+                    {
+                        String beginTime = allBeans.get(j).getTime();
+                        String endTime = allBeans.get(j + 1).getTime();
+                        if (beginTime.compareTo(endTime) < 0) {
+                            NonCheckBean smallBean = allBeans.get(j);
+                            NonCheckBean bigBean = allBeans.get(j + 1);
+                            allBeans.set(j, bigBean);
+                            allBeans.set(j + 1, smallBean);
+                        }
+                    }
+                }
+                dataResult.setBeans(allBeans);
+                result.setResult(dataResult);
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
+            }
+        }
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "传参异常");
+    }
 
 }

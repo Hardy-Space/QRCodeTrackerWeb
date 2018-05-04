@@ -713,4 +713,47 @@ public class MainService {
 	public int updateCpCkdData(CpOutVerifyResult param) {
 		return mainDao.updateCpCkdData(param);
 	}
+
+	public int updateWLIN_M(WLINParam wlinParam) {
+		return mainDao.updateWLIN_M(wlinParam);
+	}
+
+	public int createWL_RKD_New(CreateWLRKDParam rkdpParams) {
+		return mainDao.createWL_RKD_New(rkdpParams);
+	}
+
+	public PersonResult getAllPerson() {
+		List<PersonBean> beans =  mainDao.getAllPerson();
+		PersonResult personResult = new PersonResult();
+		personResult.setPersonBeans(beans);
+		return personResult;
+	}
+
+	public int updateBcpIn(BCPINParam bcpInParam) {
+		return mainDao.updateBcpIn(bcpInParam);
+	}
+
+	public List<WlRkdBean> getWlRkCanModifyData(String realName) {
+		return mainDao.getWlRkCanModifyData(realName);
+	}
+
+	public List<WlCkdBean> getWlCkCanModifyData(String realName) {
+		return mainDao.getWlCkCanModifyData(realName);
+	}
+
+	public List<WlTkdBean> getWlTkCanModifyData(String realName) {
+		return mainDao.getWlTkCanModifyData(realName);
+	}
+
+	public List<BcpRkdBean> getBcpRkCanModifyData(String realName) {
+		return mainDao.getBcpRkCanModifyData(realName);
+	}
+
+	public List<BcpCkdBean> getBcpCkCanModifyData(String realName) {
+		return mainDao.getBcpCkCanModifyData(realName);
+	}
+
+	public List<BcpTkdBean> getBcpTkCanModifyData(String realName) {
+		return mainDao.getBcpTkCanModifyData(realName);
+	}
 }
