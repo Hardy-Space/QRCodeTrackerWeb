@@ -756,4 +756,12 @@ public class MainService {
 	public List<BcpTkdBean> getBcpTkCanModifyData(String realName) {
 		return mainDao.getBcpTkCanModifyData(realName);
 	}
+
+	public int updateCPIn(SmallCPINParam inParam) {
+		return mainDao.updateCPIn(inParam);
+	}
+
+	public int updateCPIn2ByParam(BigCPINParam inParam) {
+		return mainDao.updateCPIn2ByParam(inParam);
+	}
 }

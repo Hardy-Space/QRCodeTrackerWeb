@@ -393,6 +393,7 @@
         FROM M_WLIn LEFT JOIN Pdt_Sort2 on M_WLIn.SortID = Pdt_Sort2.ID
         WHERE M_WLIn.QRCode_ID = #{0}
     </select>
+
     <select id="getSmallCpOutData" resultType="com.qdhualing.qrcodetracker.bean.SmallCpOutGetDataResult">
         SELECT M_CPS.CP_Name , M_CPS.YLPC , M_CPS.SCPC , M_CPS.SC_Time as scDate , M_CPS.GG , Pdt_Sort2.Sort_Name
         FROM M_CPS LEFT JOIN Pdt_Sort2 on M_CPS.SortID = Pdt_Sort2.ID
@@ -1898,6 +1899,57 @@ SmlPk45		= #{smlPk45},
         WHERE QRCode_ID = #{0}
     </select>
 
+    <update id="updateCPIn2ByParam" parameterType="com.qdhualing.qrcodetracker.bean.BigCPINParam">
+        update M_CPIn2
+        set
+        CP_Name = #{productName},
+        SortID = #{sortID},
+        CP_Code = #{cpCode},
+        YLPC = #{ylpc},
+        SCPC = #{scpc},
+        SC_Time = #{scTime},
+        DWZL = #{dwzl},
+        CZY = #{czy},
+        ZJY = #{zjy},
+        JYZT = #{jyzt},
+        JYBZ = #{jybz},
+        DW = #{dw},
+        GG = #{gg},
+        Indh = #{indh}
+        where QRCode_ID=#{qrCodeId}
+    </update>
+
+    <update id="updateCPIn" parameterType="com.qdhualing.qrcodetracker.bean.SmallCPINParam">
+        update M_CPIn
+        set
+        CP_Name=#{productName},
+        SortID=#{sortID},
+        SHL=#{shl},
+        CP_Code=#{cpCode},
+        YLPC=#{ylpc},
+        SCPC=#{scpc},
+        SC_Time=#{scTime},
+        DWZL=#{dwzl},
+        CZY=#{czy},
+        ZJY=#{zjy},
+        JYZT=#{jyzt},
+        DW=#{dw},
+        BZ=#{bz},
+        InDh=#{indh},
+        CPS2_QRCode=#{cPS2QRCode},
+        GG=#{gg},
+        Yl_1=#{yl1},
+        Yl_2=#{yl2},
+        Yl_3=#{yl3},
+        Yl_4=#{yl4},
+        Yl_5=#{yl5},
+        Yl_6=#{yl6},
+        Yl_7=#{yl7},
+        Yl_8=#{yl8},
+        Yl_9=#{yl9},
+        Yl_10=#{yl10}
+        where QRCode_ID=#{qrCodeId}
+    </update>
     <update id="updateBcpIn" parameterType="com.qdhualing.qrcodetracker.bean.BCPINParam">
         update M_BCPIn
         set   ProductName=#{productName},
@@ -1906,9 +1958,9 @@ SmlPk45		= #{smlPk45},
                 YLPC =#{ylpc},
                 SCPC=#{scpc},
                 GG= #{gg},
-            SHL=#{shl},
+                SHL=#{shl},
                 SC_Time=#{scTime},
-            DWZL= #{dwzl},
+                DWZL= #{dwzl},
                 KS_Time=#{ksTime},
                 WC_Time=#{wcTime},
                 GX=#{gx},
@@ -1929,7 +1981,7 @@ SmlPk45		= #{smlPk45},
                 Yl_7= #{yl7},
                 Yl_8=#{yl8},
                 Yl_9=#{yl9},
-                Yl_10=#{yl10},
+                Yl_10=#{yl10}
     where QRCode_ID=#{qrCodeId}
     </update>
 

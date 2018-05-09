@@ -10,7 +10,6 @@ package com.qdhualing.qrcodetracker.bean;
  */
 
 public class BigCPINParam {
-
     private String qrCodeId;
     private String productName;
     private int sortID;
@@ -26,6 +25,7 @@ public class BigCPINParam {
     private String jybz;
     private int bz;
     private String dw ;
+    private String indh ;
 
     public String getQrCodeId() {
         return qrCodeId;
@@ -145,5 +145,13 @@ public class BigCPINParam {
 
     public void setDw(String dw) {
         this.dw = dw;
+    }
+
+    public String getIndh() {
+        return indh;
+    }
+
+    public void setIndh(String indh) {
+        this.indh = indh;
     }
 }

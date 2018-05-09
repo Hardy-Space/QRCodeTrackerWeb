@@ -997,7 +997,8 @@ public class MainController {
             } else {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "此大包装已存在");
             }
-            b = mainService.insertCPIn2(inParam);
+//            b = mainService.insertCPIn2(inParam);
+            b = mainService.updateCPIn2ByParam(inParam);
             if (b <= 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "插入CPIn2失败");
             }
@@ -1046,7 +1047,8 @@ public class MainController {
             if (b > 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "该成品早已入库，换一个吧");
             }
-            b = mainService.insertCPIn(inParam);
+//            b = mainService.insertCPIn(inParam);
+            b = mainService.updateCPIn(inParam);
             if (b <= 0) {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "录入CPIn失败");
             }
@@ -1098,6 +1100,9 @@ public class MainController {
         param.setFhDate(sdf.format(date));
         try {
             BigCpBean bigCpBean = mainService.getCPS2(param.getQrCodeId());
+            if (bigCpBean==null) {
+                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "无此大包装");
+            }
             param.setCpName(bigCpBean.getcPName());
             param.setCpCode(bigCpBean.getcPCode());
             param.setDwzl(bigCpBean.getDwzl());
@@ -1113,9 +1118,9 @@ public class MainController {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "删除大包装记录失败");
             }
             b = mainService.deleteCPSByCps2QrId(param.getQrCodeId());
-            if (b <= 0) {
-                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "删除大包装关联的小包装记录失败");
-            }
+//            if (b <= 0) {
+//                return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_MESSAGE_ERROR, "删除大包装关联的小包装记录失败");
+//            }
             return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "大包装出库成功");
         } catch (Exception e) {
             e.printStackTrace();
@@ -1227,7 +1232,7 @@ public class MainController {
             try {
                 List<WlTrackResult> dataResults = mainService.getWlInData(param.getQrCodeId());
                 if (dataResults == null || dataResults.size() < 1) {
-                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "查无此料");
                 } else {
                     result.setResult(dataResults.get(0));
                     return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_SUCCEED, "成功");
@@ -1254,7 +1259,7 @@ public class MainController {
             try {
                 List<BCPINParam> dataResults = mainService.getBcpInData(param.getQrCodeId());
                 if (dataResults == null || dataResults.size() < 1) {
-                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "查无此料");
                 } else {
                     BcpTrackResult singleData = new BcpTrackResult();
                     BCPINParam bb = dataResults.get(0);
@@ -1326,7 +1331,7 @@ public class MainController {
             try {
                 List<CPINParam> dataResults = mainService.getSmallCpInData(param.getQrCodeId());
                 if (dataResults == null || dataResults.size() < 1) {
-                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "查无此料");
                 } else {
                     SmallCpTrackResult singleData = new SmallCpTrackResult();
                     CPINParam bb = dataResults.get(0);
@@ -1379,7 +1384,7 @@ public class MainController {
                 return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_EXCEPTION, "系统异常");
             }
         }
-        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "获取基本信息失败,请重新扫码");
+        return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_PARAMS_ERROR, "查无此料");
     }
 
     /**
@@ -1396,7 +1401,7 @@ public class MainController {
             try {
                 List<BigCpBean> dataResults = mainService.getBigCpIn2(param.getQrCodeId());
                 if (dataResults == null || dataResults.size() < 1) {
-                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "获取基本信息失败,请重新扫码");
+                    return ActionResultUtils.setResultMsg(result, ActionResult.STATUS_LOGIC_ERROR, "查无此料");
                 } else {
                     BigCpTrackResult singleData = new BigCpTrackResult();
                     BigCpBean bb = dataResults.get(0);

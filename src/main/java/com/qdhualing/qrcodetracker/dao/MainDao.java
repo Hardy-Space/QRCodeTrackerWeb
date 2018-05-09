@@ -341,4 +341,8 @@ public interface MainDao {
     List<BcpCkdBean> getBcpCkCanModifyData(String realName);
 
     List<BcpTkdBean> getBcpTkCanModifyData(String realName);
+
+    int updateCPIn(SmallCPINParam inParam);
+
+    int updateCPIn2ByParam(BigCPINParam inParam);
 }
